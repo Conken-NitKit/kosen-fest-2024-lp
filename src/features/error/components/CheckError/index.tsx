@@ -7,6 +7,10 @@ type Props = {
   reset: () => void;
 };
 
-export const CheckError = ({ reset }: Props) => {
+export const CheckError = ({ error, reset }: Props) => {
+  if (process.env.NODE_ENV === "development") {
+    throw error;
+  }
+
   return <UnexpectedError reset={reset} />;
 };
