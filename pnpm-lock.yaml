@@ -17,6 +17,9 @@ importers:
       '@radix-ui/react-slot':
         specifier: ^1.1.0
         version: 1.1.0(@types/react@18.3.11)(react@18.3.1)
+      '@radix-ui/react-switch':
+        specifier: ^1.1.1
+        version: 1.1.1(@types/react-dom@18.3.0)(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       class-variance-authority:
         specifier: ^0.7.0
         version: 0.7.0
@@ -26,6 +29,9 @@ importers:
       embla-carousel-react:
         specifier: ^8.3.0
         version: 8.3.0(react@18.3.1)
+      framer-motion:
+        specifier: ^11.11.7
+        version: 11.11.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       lucide-react:
         specifier: ^0.447.0
         version: 0.447.0(react@18.3.1)
@@ -706,6 +712,19 @@ packages:
       '@types/react':
         optional: true
 
+  '@radix-ui/react-switch@1.1.1':
+    resolution: {integrity: sha512-diPqDDoBcZPSicYoMWdWx+bCPuTRH4QSp9J+65IvtdS0Kuzt67bI6n32vCj8q6NZmYW/ah+2orOtMwcX5eQwIg==}
+    peerDependencies:
+      '@types/react': '*'
+      '@types/react-dom': '*'
+      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+      react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      '@types/react-dom':
+        optional: true
+
   '@radix-ui/react-use-callback-ref@1.1.0':
     resolution: {integrity: sha512-CasTfvsy+frcFkbXtSJ2Zu9JHpN8TYKxkgJGWbjiZhFivxaeW7rMeZt7QELGVLaYVfFMsKHjb7Ak0nMEe+2Vfw==}
     peerDependencies:
@@ -735,6 +754,15 @@ packages:
 
   '@radix-ui/react-use-layout-effect@1.1.0':
     resolution: {integrity: sha512-+FPE0rOdziWSrH9athwI1R0HDVbWlEhd+FR+aSDk4uWGmSJ9Z54sdZVDQPZAinJhJXwfT+qnj969mCsT2gfm5w==}
+    peerDependencies:
+      '@types/react': '*'
+      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+
+  '@radix-ui/react-use-previous@1.1.0':
+    resolution: {integrity: sha512-Z/e78qg2YFnnXcW88A4JmTtm4ADckLno6F7OXotmkQfeuCVaKuYzqAATPhVzl3delXE7CxIV8shofPn3jPc5Og==}
     peerDependencies:
       '@types/react': '*'
       react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
@@ -1494,6 +1522,20 @@ packages:
   foreground-child@3.3.0:
     resolution: {integrity: sha512-Ld2g8rrAyMYFXBhEqMz8ZAHBi4J4uS1i/CxGMDnjyFWddMXLVcDp051DZfu+t7+ab7Wv6SMqpWmyFIj5UbfFvg==}
     engines: {node: '>=14'}
+
+  framer-motion@11.11.7:
+    resolution: {integrity: sha512-89CgILOXPeG3L7ymOTGrLmf8IiKubYLUN/QkYgQuLvehAHfqgwJbLfCnhuyRI4WTds1TXkUp67A7IJrgRY/j1w==}
+    peerDependencies:
+      '@emotion/is-prop-valid': '*'
+      react: ^18.0.0
+      react-dom: ^18.0.0
+    peerDependenciesMeta:
+      '@emotion/is-prop-valid':
+        optional: true
+      react:
+        optional: true
+      react-dom:
+        optional: true
 
   fs-extra@11.1.0:
     resolution: {integrity: sha512-0rcTq621PD5jM/e0a3EJoGC/1TC5ZBCERW82LQuwfGnCa1V8w7dpYH1yNu+SLb6E5dkeCBzKEyLGlFrnr+dUyw==}
@@ -3073,6 +3115,21 @@ snapshots:
     optionalDependencies:
       '@types/react': 18.3.11
 
+  '@radix-ui/react-switch@1.1.1(@types/react-dom@18.3.0)(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@radix-ui/primitive': 1.1.0
+      '@radix-ui/react-compose-refs': 1.1.0(@types/react@18.3.11)(react@18.3.1)
+      '@radix-ui/react-context': 1.1.1(@types/react@18.3.11)(react@18.3.1)
+      '@radix-ui/react-primitive': 2.0.0(@types/react-dom@18.3.0)(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-use-controllable-state': 1.1.0(@types/react@18.3.11)(react@18.3.1)
+      '@radix-ui/react-use-previous': 1.1.0(@types/react@18.3.11)(react@18.3.1)
+      '@radix-ui/react-use-size': 1.1.0(@types/react@18.3.11)(react@18.3.1)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+    optionalDependencies:
+      '@types/react': 18.3.11
+      '@types/react-dom': 18.3.0
+
   '@radix-ui/react-use-callback-ref@1.1.0(@types/react@18.3.11)(react@18.3.1)':
     dependencies:
       react: 18.3.1
@@ -3094,6 +3151,12 @@ snapshots:
       '@types/react': 18.3.11
 
   '@radix-ui/react-use-layout-effect@1.1.0(@types/react@18.3.11)(react@18.3.1)':
+    dependencies:
+      react: 18.3.1
+    optionalDependencies:
+      '@types/react': 18.3.11
+
+  '@radix-ui/react-use-previous@1.1.0(@types/react@18.3.11)(react@18.3.1)':
     dependencies:
       react: 18.3.1
     optionalDependencies:
@@ -3838,6 +3901,13 @@ snapshots:
     dependencies:
       cross-spawn: 7.0.3
       signal-exit: 4.1.0
+
+  framer-motion@11.11.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+    dependencies:
+      tslib: 2.7.0
+    optionalDependencies:
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
 
   fs-extra@11.1.0:
     dependencies:
