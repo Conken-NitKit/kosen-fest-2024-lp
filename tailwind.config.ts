@@ -78,6 +78,17 @@ const config: Config = {
       xl: "28px",
       full: "calc(infinity * 1px)",
     },
+    boxShadow: {
+      flat: "8px 8px 16px 0 rgba(0, 0, 0, 0.25)",
+      clay: "8px 8px 16px 0 rgba(0, 0, 0, 0.25), inset -8px -8px 16px 0 rgba(0, 0, 0, 0.25), inset 8px 8px 16px 0 hsla(0, 0%, 100%, 0.2)",
+    },
+    brightness: {
+      hover: ".95",
+      focus: ".9",
+    },
+    opacity: {
+      disabled: ".5",
+    },
   },
   plugins: [require("tailwindcss-animate")],
   mode: "jit",
