@@ -7,14 +7,14 @@ import { LogoAnimation } from "../LogoAnimation";
 import { Pictures } from "../Pictures";
 
 export const Top = () => {
-  const [show, setShow] = useState(true);
+  // const [show, setShow] = useState(true);
 
-  useEffect(() => {
-    const timer = setTimeout(() => setShow(false), 2000); // 2秒後に非表示
-    return () => clearTimeout(timer);
-  }, []);
+  // useEffect(() => {
+  //   const timer = setTimeout(() => setShow(false), 2000); // 2秒後に非表示
+  //   return () => clearTimeout(timer);
+  // }, []);
 
-  if (show) return <LogoAnimation />;
+  // if (show) return <LogoAnimation />;
 
   return (
     <div>
