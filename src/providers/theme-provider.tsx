@@ -33,13 +33,5 @@ export const ThemeProvider = ({ children }: PropsWithChildren) => {
     localStorage.setItem("theme", newTheme);
   };
 
-  return (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
-      <Background>{children}</Background>
-    </ThemeContext.Provider>
-  );
-};
-
-const Background = ({ children }: PropsWithChildren) => {
-  return <div className="bg-background transition duration-500 ease-in-out">{children}</div>;
+  return <ThemeContext.Provider value={{ theme, setTheme }}>{children}</ThemeContext.Provider>;
 };
