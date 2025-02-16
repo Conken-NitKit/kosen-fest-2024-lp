@@ -17,10 +17,10 @@ type Props = {
   disabled?: boolean;
 } & (
   | ({ mode: "button" } & ComponentProps<typeof motion.button>)
-  // 入れ子のaタグも面倒なので避ける
-  | { mode: "link"; tag: ReactElement }
   // TODO: draggableは面倒なので必要になったら実装する。
   | ({ mode?: "default" | "draggable" } & ComponentProps<typeof motion.div>)
+  // 入れ子のaタグも面倒なので避ける
+  | { mode: "link"; tag: ReactElement }
 );
 export const Card = ({
   color,
