@@ -12,20 +12,12 @@ export const Disabled: Story = {
 };
 
 export const Link: Story = {
-  // args渡して指定するとなぜかエラーになったのでその対策でrender使ってる
-  render: (args) => (
-    <FloatingActionButton {...args} asChild>
-      <NextLink href="/" />
-    </FloatingActionButton>
-  ),
+  // argsを使って指定するとなぜかエラーになったのでその対策でrender使ってる
+  render: (args) => <FloatingActionButton {...args} tag={<NextLink href="/" />} />,
 };
 
 export const DisabledLink: Story = {
-  render: (args) => (
-    <FloatingActionButton disabled {...args} asChild>
-      <NextLink href="/" />
-    </FloatingActionButton>
-  ),
+  render: (args) => <FloatingActionButton disabled {...args} tag={<NextLink href="/" />} />,
 };
 
 export default {

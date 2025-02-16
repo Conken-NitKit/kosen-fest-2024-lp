@@ -16,8 +16,8 @@ type Props = {
   icon: (props: IconProps) => ReactNode;
   disabled?: boolean;
 } & (
-  | { asChild: true; children: ReactElement }
-  | ({ asChild?: false } & Omit<ComponentProps<typeof motion.button>, "className">)
+  | { tag: ReactElement }
+  | ({ tag: undefined } & Omit<ComponentProps<typeof motion.button>, "className">)
 );
 export const FloatingActionButton = ({
   size,
@@ -29,12 +29,12 @@ export const FloatingActionButton = ({
   ...props
 }: Props) => {
   const getComponent = () => {
-    if (props.asChild) {
-      const children = getElementOrThrow(props.children);
+    if (props.tag) {
+      const tag = getElementOrThrow(props.tag);
       if (disabled) {
         return <div aria-disabled />;
       }
-      return children;
+      return tag;
     }
     const type = props.type ? props.type : "button";
     return (
