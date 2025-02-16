@@ -1,13 +1,8 @@
 import { cn } from "@/lib/utils";
+import { getElementOrThrow } from "@/utils/get-element-or-throw";
 import { cva } from "class-variance-authority";
 import { motion } from "motion/react";
-import {
-  type ComponentProps,
-  type ReactElement,
-  type ReactNode,
-  cloneElement,
-  isValidElement,
-} from "react";
+import { type ComponentProps, type ReactElement, type ReactNode, cloneElement } from "react";
 
 type IconProps = {
   className: string;
@@ -22,7 +17,7 @@ type Props = {
   disabled?: boolean;
 } & (
   | { asChild: true; children: ReactElement }
-  | ({ asChild: false } & Omit<ComponentProps<typeof motion.button>, "className">)
+  | ({ asChild?: false } & Omit<ComponentProps<typeof motion.button>, "className">)
 );
 export const FloatingActionButton = ({
   size,
@@ -31,32 +26,32 @@ export const FloatingActionButton = ({
   elevation,
   icon,
   disabled = false,
-  asChild = false,
-  children,
   ...props
 }: Props) => {
-  // isValidElementでchildrenがJSXタグか判定
-  const isValidAsChild = asChild && isValidElement(children);
+  const getComponent = () => {
+    if (props.asChild) {
+      const children = getElementOrThrow(props.children);
+      if (disabled) {
+        return <div aria-disabled />;
+      }
+      return children;
+    }
+    const type = props.type ? props.type : "button";
+    return (
+      <motion.button
+        type={type}
+        disabled={disabled}
+        whileTap={{ filter: "brightness(.7)", scale: 0.9 }}
+        {...props}
+      />
+    );
+  };
 
   // cloneElementの参考: https://ja.react.dev/reference/react/cloneElement
   // cloneElement(element, props, ...children)
   // cloneElement を呼び出して、element を基に、異なる props と children を持った React 要素を作成します
   return cloneElement(
-    isValidAsChild ? (
-      disabled ? (
-        <div aria-disabled />
-      ) : (
-        children
-      )
-    ) : (
-      // props.type ? props.type : "button"のような挙動
-      <motion.button
-        type="button"
-        disabled={disabled}
-        whileTap={{ filter: "brightness(.7)", scale: 0.9 }}
-        {...props}
-      />
-    ),
+    getComponent(),
     {
       className: cn(buttonVariants({ color, size, shape, elevation })),
     },
@@ -65,7 +60,7 @@ export const FloatingActionButton = ({
 };
 
 const buttonVariants = cva(
-  "flex items-center justify-center outline-outline transition hover:brightness-hover focus:brightness-focus disabled:pointer-events-none disabled:opacity-disabled",
+  "flex items-center justify-center outline-outline transition hover:brightness-hover focus:brightness-focus disabled:pointer-events-none disabled:opacity-disabled aria-disabled:pointer-events-none aria-disabled:opacity-disabled",
   {
     variants: {
       color: {
