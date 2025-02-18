@@ -29,6 +29,6 @@ export default {
     shape: "default",
     elevation: "flat",
     type: "button",
-    icon: ({ className }) => <Pencil className={className} />,
+    children: ({ className }) => <Pencil className={className} />,
   },
 } satisfies Meta<typeof FloatingActionButton>;

@@ -2,7 +2,8 @@ import { cn } from "@/lib/utils";
 import { getElementOrThrow } from "@/utils/get-element-or-throw";
 import { cva } from "class-variance-authority";
 import { motion } from "motion/react";
-import { type ComponentProps, type ReactElement, type ReactNode, cloneElement } from "react";
+import type { ComponentProps, ReactElement, ReactNode } from "react";
+import { Slot } from "../core/slot";
 
 type IconProps = {
   className: string;
@@ -13,18 +14,19 @@ type Props = {
   shape: "default" | "circle";
   color: "surface" | "primary" | "secondary" | "tertiary";
   elevation: "flat" | "clay";
-  icon: (props: IconProps) => ReactNode;
+  children: (props: IconProps) => ReactNode;
   disabled?: boolean;
 } & (
   | { tag: ReactElement }
-  | ({ tag: undefined } & Omit<ComponentProps<typeof motion.button>, "className">)
+  // { tag: undefined }だと引数が必要になるので注意
+  | ({ tag?: undefined } & Omit<ComponentProps<typeof motion.button>, "className" | "children">)
 );
 export const FloatingActionButton = ({
   size,
   shape,
   color,
   elevation,
-  icon,
+  children,
   disabled = false,
   ...props
 }: Props) => {
@@ -47,15 +49,13 @@ export const FloatingActionButton = ({
     );
   };
 
-  // cloneElementの参考: https://ja.react.dev/reference/react/cloneElement
-  // cloneElement(element, props, ...children)
-  // cloneElement を呼び出して、element を基に、異なる props と children を持った React 要素を作成します
-  return cloneElement(
-    getComponent(),
-    {
-      className: cn(buttonVariants({ color, size, shape, elevation })),
-    },
-    icon({ className: cn(iconVariants({ size })) }),
+  return (
+    <Slot
+      element={getComponent()}
+      className={cn(buttonVariants({ color, size, shape, elevation }))}
+    >
+      {children({ className: cn(iconVariants({ size })) })}
+    </Slot>
   );
 };
 
