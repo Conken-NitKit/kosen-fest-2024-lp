@@ -7,17 +7,9 @@ type Story = StoryObj<typeof FloatingActionButton>;
 
 export const Surface: Story = {};
 
-export const Disabled: Story = {
-  args: { disabled: true },
-};
-
 export const Link: Story = {
   // argsを使って指定するとなぜかエラーになったのでその対策でrender使ってる
   render: (args) => <FloatingActionButton {...args} tag={<NextLink href="/" />} />,
-};
-
-export const DisabledLink: Story = {
-  render: (args) => <FloatingActionButton disabled {...args} tag={<NextLink href="/" />} />,
 };
 
 export default {

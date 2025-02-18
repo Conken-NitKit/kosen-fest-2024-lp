@@ -16,7 +16,6 @@ type Props = {
   design: "flat" | "clay";
   children: (props: IconProps) => ReactNode;
   className?: string;
-  disabled?: boolean;
 } & (
   | { tag: ReactElement }
   // { tag: undefined }だと引数が必要になるので注意
@@ -32,7 +31,6 @@ type Props = {
  * @param props.children - ボタンのアイコン
  * @param props.className - ボタンの位置やマージンなどを制御する必要があるときに使う
  * @param props.tag - Linkにしたい時などカスタムタグを使用する場合に指定
- * @param props.disabled - ボタンが無効化されているかどうか
  */
 export const FloatingActionButton = ({
   size,
@@ -42,32 +40,23 @@ export const FloatingActionButton = ({
   className,
   // icon
   children,
-  disabled = false,
   ...props
 }: Props) => {
   const getComponent = () => {
     if (props.tag) {
       const tag = getElementOrThrow(props.tag);
-      if (disabled) {
-        return <div aria-disabled />;
-      }
       return tag;
     }
     const type = props.type ? props.type : "button";
     return (
-      <motion.button
-        type={type}
-        disabled={disabled}
-        whileTap={{ filter: "brightness(.7)", scale: 0.9 }}
-        {...props}
-      />
+      <motion.button type={type} whileTap={{ filter: "brightness(.7)", scale: 0.9 }} {...props} />
     );
   };
 
   return (
     <Slot
       element={getComponent()}
-      className={cn(buttonVariants({ color, size, shape, design, disabled }), className)}
+      className={cn(buttonVariants({ color, size, shape, design }), className)}
     >
       {children({ className: cn(iconVariants({ size })) })}
     </Slot>
@@ -75,7 +64,7 @@ export const FloatingActionButton = ({
 };
 
 const buttonVariants = cva(
-  "flex items-center justify-center outline-outline transition cursor-pointer z-level1",
+  "flex items-center justify-center outline-outline transition cursor-pointer z-level1 hover:brightness-active focus:brightness-active",
   {
     variants: {
       color: {
@@ -96,10 +85,6 @@ const buttonVariants = cva(
       design: {
         flat: "shadow-flat",
         clay: "shadow-clay",
-      },
-      disabled: {
-        true: "cursor-not-allowed opacity-disabled",
-        false: "hover:brightness-active focus:brightness-active",
       },
     },
   },
