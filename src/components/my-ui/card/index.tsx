@@ -22,7 +22,7 @@ export const Card = ({
   color,
   elevation,
   className,
-  // contents
+  // menu-items
   children,
   disabled,
   ...props
