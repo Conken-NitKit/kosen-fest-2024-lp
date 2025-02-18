@@ -27,7 +27,7 @@ export default {
     color: "surface",
     size: "md",
     shape: "default",
-    elevation: "flat",
+    design: "flat",
     type: "button",
     children: ({ className }) => <Pencil className={className} />,
   },

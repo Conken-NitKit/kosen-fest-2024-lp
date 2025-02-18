@@ -62,19 +62,21 @@
   --color-surface-container-high: var(--surface-container-high);
   --color-surface-container-highest: var(--surface-container-highest);
 
-  --spacing-container-sm: 40px;
-  --spacing-container: 56px;
-  --spacing-container-lg: 96px;
-  --spacing-icon-sm: 24px;
-  --spacing-icon: 32px;
-  --spacing-icon-lg: 40px;
-  --spacing-spacer: 24px;
+  /* このあたりにサイズを追加 */
+  --spacing-container-40: 40px;
+  --spacing-container-56: 56px;
+  --spacing-container-96: 96px;
 
-  /* var(--padding)pxはできないのでこう */
-  --padding-padding: calc(var(--padding) * 1px);
+  --spacing-icon-24: 24px;
+  --spacing-icon-36: 36px;
 
-  --margin-sm: 16px;
-  --margin-md: 24px;
+  --spacing-padding-8: 8px;
+  --spacing-padding-12: 12px;
+  --spacing-padding-16: 16px;
+
+  /* Window端のPaddingとPaneで使う */
+  --spacing-spacer-small: 16px;
+  --spacing-spacer-normal: 24px;
 
   --radius-none: 0px;
   --radius-xs: 4px;
@@ -84,24 +86,33 @@
   --radius-xl: 28px;
   --radius-full: calc(infinity * 1px);
 
+  /* Dark Mode でも影の色は変化しないようにする */
   --shadow-flat: 8px 8px 16px 0 rgba(0, 0, 0, 0.25);
   --shadow-clay:
     8px 8px 16px 0 rgba(0, 0, 0, 0.25), inset -8px -8px 16px 0 rgba(0, 0, 0, 0.25),
     inset 8px 8px 16px 0 hsla(0, 0%, 100%, 0.2);
 
-  --brightness-hover: 0.95;
-  --brightness-focus: 0.9;
+  /* Hover, Focus に対して追加する */
+  /* 色指定だと大変なのでbrightnessで管理 */
+  --brightness-active: 0.95;
 
-  --opacity-disabled: 0.5;
+  /* 管理が難しいのでこれだけ */
+  --opacity-disabled: 0.38;
 
-  --z-index-lowest: 0;
-  --z-index-low: 1;
-  --z-index-medium: 3;
-  --z-index-high: 6;
+  /* Dialog, Search Dialog */
+  --z-index-level3: 6;
+  /* Menu (Dropdown Menu, Exposed Menu, Color Picker, Date Picker) */
+  --z-index-level2: 3;
+  /* Tooltipはなるべく被らないよう位置調整が必要 */
+  /* 絶対座標指定なもの (FAB, Tooltip, Navigation Bar) */
+  --z-index-level1: 1;
+  /* その他 */
+  --z-index-level0: 0;
 }
 
 /*
-  色はこれを使って設定: https://material-foundation.github.io/material-theme-builder/
+  色をジェネレータを使って設定
+  使ったジェネレータ: https://material-foundation.github.io/material-theme-builder/
   Primary: #63A002
   Secondary: #85976E
   Tertiary: #4D9D98
@@ -210,10 +221,6 @@
   --surface-container: rgb(29 33 23);
   --surface-container-high: rgb(39 43 33);
   --surface-container-highest: rgb(50 54 43);
-}
-
-:root {
-  --padding: 4;
 }
 
 @layer base {

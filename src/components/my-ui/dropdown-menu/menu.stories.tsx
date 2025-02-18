@@ -12,7 +12,7 @@ export default {
   component: DropdownMenu,
   args: {
     trigger: (
-      <FloatingActionButton size="md" shape="default" color="surface" elevation="flat">
+      <FloatingActionButton size="md" shape="default" color="surface" design="flat">
         {(props) => <Pencil {...props} />}
       </FloatingActionButton>
     ),

@@ -8,7 +8,7 @@ import { Slot } from "../core/slot";
 
 type Props = {
   color: "elevated" | "filled" | "outlined";
-  elevation: "flat" | "clay";
+  design: "flat" | "clay";
   className?: string;
   disabled?: boolean;
 } & (
@@ -20,7 +20,7 @@ type Props = {
 );
 export const Card = ({
   color,
-  elevation,
+  design,
   className,
   // menu-items
   children,
@@ -45,7 +45,7 @@ export const Card = ({
 
   // elementをJSX形式で渡すと上手く動かない
   return (
-    <Slot element={getTag()} className={cn(cardVariants({ color, elevation, mode: props.mode }))}>
+    <Slot element={getTag()} className={cn(cardVariants({ color, design, mode: props.mode }))}>
       {children}
     </Slot>
   );
@@ -59,7 +59,7 @@ const cardVariants = cva("", {
       filled: "",
       outlined: "",
     },
-    elevation: {
+    design: {
       flat: "",
       clay: "",
     },
@@ -68,6 +68,10 @@ const cardVariants = cva("", {
       button: "",
       draggable: "",
       link: "",
+    },
+    disabled: {
+      true: "",
+      false: "",
     },
   },
   defaultVariants: {

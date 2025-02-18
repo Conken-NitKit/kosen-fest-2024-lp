@@ -13,19 +13,33 @@ type Props = {
   size: "sm" | "md" | "lg";
   shape: "default" | "circle";
   color: "surface" | "primary" | "secondary" | "tertiary";
-  elevation: "flat" | "clay";
+  design: "flat" | "clay";
   children: (props: IconProps) => ReactNode;
+  className?: string;
   disabled?: boolean;
 } & (
   | { tag: ReactElement }
   // { tag: undefined }だと引数が必要になるので注意
-  | ({ tag?: undefined } & Omit<ComponentProps<typeof motion.button>, "className" | "children">)
+  | ({ tag?: undefined } & Omit<ComponentProps<typeof motion.button>, "children">)
 );
+/**
+ * 画面上で最も一般的または重要なアクションにはFABを使用する
+ * - FABはコンテンツがスクロールしている間も画面上に残るようにする必要がある
+ * @param props.size - ボタンのサイズ ("sm" | "md" | "lg")
+ * @param props.shape - ボタンの形状 ("default" | "circle")
+ * @param props.color - ボタンの色 ("surface" | "primary" | "secondary" | "tertiary")
+ * @param props.design - ボタンのデザイン ("flat" | "clay")
+ * @param props.children - ボタンのアイコン
+ * @param props.className - ボタンの位置やマージンなどを制御する必要があるときに使う
+ * @param props.tag - Linkにしたい時などカスタムタグを使用する場合に指定
+ * @param props.disabled - ボタンが無効化されているかどうか
+ */
 export const FloatingActionButton = ({
   size,
   shape,
   color,
-  elevation,
+  design,
+  className,
   // icon
   children,
   disabled = false,
@@ -53,7 +67,7 @@ export const FloatingActionButton = ({
   return (
     <Slot
       element={getComponent()}
-      className={cn(buttonVariants({ color, size, shape, elevation }))}
+      className={cn(buttonVariants({ color, size, shape, design, disabled }), className)}
     >
       {children({ className: cn(iconVariants({ size })) })}
     </Slot>
@@ -61,27 +75,31 @@ export const FloatingActionButton = ({
 };
 
 const buttonVariants = cva(
-  "flex items-center justify-center outline-outline transition hover:brightness-hover focus:brightness-focus disabled:pointer-events-none disabled:opacity-disabled aria-disabled:pointer-events-none aria-disabled:opacity-disabled",
+  "flex items-center justify-center outline-outline transition cursor-pointer z-level1",
   {
     variants: {
       color: {
-        surface: "bg-surface-container-high text-primary",
+        surface: "bg-surface-container-low text-primary",
         primary: "bg-primary-container text-on-primary-container",
         secondary: "bg-secondary-container text-on-secondary-container",
         tertiary: "bg-tertiary-container text-on-tertiary-container",
       },
       size: {
-        sm: "h-container-sm w-container-sm rounded-md",
-        md: "h-container w-container rounded-lg",
-        lg: "h-container-lg w-container-lg rounded-xl",
+        sm: "size-container-40 rounded-md",
+        md: "size-container-56 rounded-lg",
+        lg: "size-container-96 rounded-xl",
       },
       shape: {
         default: "",
         circle: "rounded-full",
       },
-      elevation: {
+      design: {
         flat: "shadow-flat",
         clay: "shadow-clay",
+      },
+      disabled: {
+        true: "cursor-not-allowed opacity-disabled",
+        false: "hover:brightness-active focus:brightness-active",
       },
     },
   },
@@ -90,9 +108,9 @@ const buttonVariants = cva(
 const iconVariants = cva("", {
   variants: {
     size: {
-      sm: "h-icon-sm w-icon-sm",
-      md: "h-icon w-icon",
-      lg: "h-icon-lg w-icon-lg",
+      sm: "size-icon-24",
+      md: "size-icon-24",
+      lg: "size-icon-36",
     },
   },
 });

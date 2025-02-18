@@ -1,12 +1,9 @@
-import { useCssVariable } from "@/hooks/use-css-variable";
 import { getElementOrThrow } from "@/utils/get-element-or-throw";
-import { toNumberOrError } from "@/utils/string";
 import {
   FloatingFocusManager,
   FloatingPortal,
   type UseFloatingOptions,
   flip,
-  offset,
   shift,
   useClick,
   useDismiss,
@@ -46,7 +43,6 @@ export const DropdownMenu = memo(
     onOpenChange: handleOpenChange,
     role = "menu",
   }: PropsWithChildren<Props>) => {
-    const padding = useCssVariable("--padding", (v) => toNumberOrError(v));
     // trigger要素のpropsを取得
     const triggerProps = (
       getElementOrThrow(trigger) as unknown as ReactElement<HTMLAttributes<Element>>
@@ -61,8 +57,8 @@ export const DropdownMenu = memo(
         setIsOpen(open);
         handleOpenChange?.(open, event, reason);
       },
-      // trigger要素の下に可能な限り少しスペースを開けてメニューを配置し、できなければ上に配置する
-      middleware: [flip(), shift(), offset({ mainAxis: padding, crossAxis: padding })],
+      // trigger要素の下に可能な限りメニューを配置し、できなければ上に配置する
+      middleware: [flip(), shift()],
     });
     // Floating UIを使う時はクリックするためにonClickではなくこちらを使う
     const clickProps = useClick(context);
@@ -88,10 +84,10 @@ export const DropdownMenu = memo(
                 ref={refs.setFloating}
                 style={floatingStyles}
                 {...getFloatingProps()}
-                className="z-medium min-w-max"
+                className="z-level2 min-w-max"
               >
                 {/* childrenでlist表示 */}
-                <ul className="bg-surface-container p-padding">{children}</ul>
+                <ul className="bg-surface-container px-padding-12 py-padding-8">{children}</ul>
               </div>
             </FloatingFocusManager>
           </FloatingPortal>
