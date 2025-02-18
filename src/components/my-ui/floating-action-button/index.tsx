@@ -49,7 +49,21 @@ export const FloatingActionButton = ({
     }
     const type = props.type ? props.type : "button";
     return (
-      <motion.button type={type} whileTap={{ filter: "brightness(.7)", scale: 0.9 }} {...props} />
+      <motion.button
+        // whileTapだけだとfilterがなぜか変わらないのでこうする
+        variants={{
+          normal: { filter: "brightness(1)" },
+          tap: { filter: "brightness(var(--brightness-press))", scale: 0.9 },
+          active: { filter: "brightness(var(--brightness-active))" },
+        }}
+        type={type}
+        initial="normal"
+        whileTap="tap"
+        // classと競合するのでこちらにまとめる
+        whileHover="active"
+        whileFocus="active"
+        {...props}
+      />
     );
   };
 
@@ -64,7 +78,7 @@ export const FloatingActionButton = ({
 };
 
 const buttonVariants = cva(
-  "flex items-center justify-center outline-outline transition cursor-pointer z-level1 hover:brightness-active focus:brightness-active",
+  "flex items-center justify-center outline-outline transition cursor-pointer z-level1",
   {
     variants: {
       color: {

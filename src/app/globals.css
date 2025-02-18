@@ -94,7 +94,8 @@
 
   /* Hover, Focus に対して追加する */
   /* 色指定だと大変なのでbrightnessで管理 */
-  --brightness-active: 0.95;
+  --brightness-active: var(--brightness-active);
+  --brightness-press: var(--brightness-press);
 
   /* 管理が難しいのでこれだけ */
   --opacity-disabled: 0.38;
@@ -108,6 +109,12 @@
   --z-index-level1: 1;
   /* その他 */
   --z-index-level0: 0;
+}
+
+/* Tailwind以外から利用したいCSSを定義 */
+:root {
+  --brightness-active: 0.95;
+  --brightness-press: 0.9;
 }
 
 /*
