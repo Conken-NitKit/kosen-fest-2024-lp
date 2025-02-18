@@ -26,6 +26,7 @@ export const FloatingActionButton = ({
   shape,
   color,
   elevation,
+  // icon
   children,
   disabled = false,
   ...props
