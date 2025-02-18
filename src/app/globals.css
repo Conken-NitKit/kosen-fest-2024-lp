@@ -68,6 +68,13 @@
   --spacing-icon-sm: 24px;
   --spacing-icon: 32px;
   --spacing-icon-lg: 40px;
+  --spacing-spacer: 24px;
+
+  /* var(--padding)pxはできないのでこう */
+  --padding-padding: calc(var(--padding) * 1px);
+
+  --margin-sm: 16px;
+  --margin-md: 24px;
 
   --radius-none: 0px;
   --radius-xs: 4px;
@@ -86,6 +93,11 @@
   --brightness-focus: 0.9;
 
   --opacity-disabled: 0.5;
+
+  --z-index-lowest: 0;
+  --z-index-low: 1;
+  --z-index-medium: 3;
+  --z-index-high: 6;
 }
 
 /*
@@ -198,6 +210,10 @@
   --surface-container: rgb(29 33 23);
   --surface-container-high: rgb(39 43 33);
   --surface-container-highest: rgb(50 54 43);
+}
+
+:root {
+  --padding: 4;
 }
 
 @layer base {

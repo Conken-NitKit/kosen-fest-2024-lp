@@ -1,7 +1,8 @@
-import { type ReactElement, isValidElement } from "react";
+import { type ReactNode, isValidElement } from "react";
 
-export const getElementOrThrow = (element: ReactElement) => {
-  // isValidElementでchildrenがJSXタグか判定
+/** elementがJSXタグなら値を返し、そうでなければエラーを投げる */
+export const getElementOrThrow = (element: ReactNode) => {
+  // isValidElementでelementがJSXタグか判定
   if (isValidElement(element)) {
     return element;
   }
