@@ -1,3 +1,4 @@
+import { useCssVariable } from "@/hooks/use-css-variable";
 import { cn } from "@/lib/utils";
 import { getElementOrThrow } from "@/utils/get-element-or-throw";
 import { cva } from "class-variance-authority";
@@ -54,7 +55,8 @@ export const FloatingActionButton = ({
         variants={{
           normal: { filter: "brightness(1)" },
           tap: { filter: "brightness(var(--brightness-press))", scale: 0.9 },
-          active: { filter: "brightness(var(--brightness-active))" },
+          // なぜかエラーが出るのでゴリ押し
+          active: { filter: `brightness(${useCssVariable("--brightness-active", (v) => v)})` },
         }}
         type={type}
         initial="normal"
