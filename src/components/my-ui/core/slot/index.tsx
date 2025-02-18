@@ -1,7 +1,7 @@
 import { getElementOrThrow } from "@/utils/get-element-or-throw";
 import { type HTMLAttributes, type ReactNode, type Ref, cloneElement } from "react";
 
-type Props = { element: ReactNode; ref?: Ref<Element> } & HTMLAttributes<Element>;
+type Props = { element: ReactNode; ref?: Ref<HTMLElement> } & HTMLAttributes<HTMLElement>;
 
 /**
  * `element`を基に、異なる`props`と`children`を持ったReact要素を作成するコンポーネント
