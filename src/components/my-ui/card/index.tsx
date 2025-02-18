@@ -3,12 +3,8 @@ import { getElementOrThrow } from "@/utils/get-element-or-throw";
 import { omit } from "@/utils/object";
 import { cva } from "class-variance-authority";
 import { motion } from "motion/react";
-import {
-  type ComponentProps,
-  type PropsWithChildren,
-  type ReactElement,
-  cloneElement,
-} from "react";
+import type { ComponentProps, PropsWithChildren, ReactElement } from "react";
+import { Slot } from "../core/slot";
 
 type Props = {
   color: "elevated" | "filled" | "outlined";
@@ -26,11 +22,12 @@ export const Card = ({
   color,
   elevation,
   className,
+  // contents
   children,
   disabled,
   ...props
 }: PropsWithChildren<Props>) => {
-  const getComponent = () => {
+  const getTag = () => {
     // 型ガードの仕様で分割代入して mode === "button" としてpropsを絞り込むことはできないのでこうする
     if (props.mode === "button") {
       const type = props.type ? props.type : "button";
@@ -46,13 +43,11 @@ export const Card = ({
     return <motion.div {...omit(props, ["mode"])} aria-disabled={disabled} />;
   };
 
-  return cloneElement(
-    // elementをJSX形式で渡すと上手く動かない
-    getComponent(),
-    {
-      className: cn(cardVariants({ color, elevation, mode: props.mode }), className),
-    },
-    children,
+  // elementをJSX形式で渡すと上手く動かない
+  return (
+    <Slot element={getTag()} className={cn(cardVariants({ color, elevation, mode: props.mode }))}>
+      {children}
+    </Slot>
   );
 };
 
