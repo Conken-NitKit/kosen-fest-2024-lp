@@ -1,8 +1,10 @@
+import { cn } from "@/lib/utils";
 import { getElementOrThrow } from "@/utils/get-element-or-throw";
 import {
   FloatingFocusManager,
   FloatingPortal,
   type UseFloatingOptions,
+  type UseInteractionsReturn,
   flip,
   shift,
   useClick,
@@ -11,21 +13,21 @@ import {
   useInteractions,
   useRole,
 } from "@floating-ui/react";
-import {
-  type HTMLAttributes,
-  type PropsWithChildren,
-  type ReactElement,
-  type ReactNode,
-  memo,
-  useState,
-} from "react";
+import { cva } from "class-variance-authority";
+import { type HTMLAttributes, type ReactElement, type ReactNode, memo, useState } from "react";
+import { match } from "ts-pattern";
 import { Slot } from "../core/slot";
+import type { DropdownMenuItemRole } from "./menu-item";
 
 type Props = {
   trigger: ReactNode;
-  onOpenChange?: UseFloatingOptions["onOpenChange"];
+  children: (props: {
+    role: DropdownMenuItemRole;
+    getItemProps: UseInteractionsReturn["getItemProps"];
+  }) => ReactNode;
   // roleは指定できるようにする
-  role?: "menu" | "select" | "combobox";
+  role?: "menu" | "select" | "combobox" | "menucheckbox" | "menuradio";
+  onOpenChange?: UseFloatingOptions["onOpenChange"];
 };
 /**
  * 「ただのメニューまたは入力候補を表示するため」に使うべき
@@ -34,18 +36,13 @@ type Props = {
  * - `trigger`要素の下に可能な限り少しスペースを開けてメニューを配置し、できなければ上に配置する
  * @param props.trigger - 何らかの`button`
  * @param props.children - `DropdownMenuItem`等
- * @param props.role - 「入力候補を表示する」用途の場合に指定（デフォルトは`"menu"`）
+ * @param props.role - 入力候補を表示するとき、リストをフィルタリングするための入力も含まれている場合は`"combobox"`、一般用途であれば`"select"`を使用する必要がある（デフォルトは`"menu"`）
  */
 export const DropdownMenu = memo(
-  ({
-    trigger,
-    children,
-    onOpenChange: handleOpenChange,
-    role = "menu",
-  }: PropsWithChildren<Props>) => {
+  ({ trigger, children, onOpenChange: handleOpenChange, role = "menu" }: Props) => {
     // trigger要素のpropsを取得
     const triggerProps = (
-      getElementOrThrow(trigger) as unknown as ReactElement<HTMLAttributes<Element>>
+      getElementOrThrow(trigger) as unknown as ReactElement<HTMLAttributes<HTMLElement>>
     ).props;
 
     const [isOpen, setIsOpen] = useState(false);
@@ -64,8 +61,12 @@ export const DropdownMenu = memo(
     const clickProps = useClick(context);
     // menu外側をクリックするなどして閉じる
     const dismissProps = useDismiss(context);
-    const roleProps = useRole(context, { role });
-    const { getReferenceProps, getFloatingProps } = useInteractions([
+    const roleProps = useRole(context, {
+      role: match(role)
+        .with("combobox", "select", (v) => v)
+        .otherwise(() => "menu"),
+    });
+    const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions([
       clickProps,
       dismissProps,
       roleProps,
@@ -80,19 +81,31 @@ export const DropdownMenu = memo(
           <FloatingPortal>
             {/* modal={true}だと、modal内のみのフォーカスに制限されるので無効にする */}
             <FloatingFocusManager context={context} modal={false}>
-              <div
+              {/* childrenでlist表示 */}
+              <ul
                 ref={refs.setFloating}
                 style={floatingStyles}
                 {...getFloatingProps()}
-                className="z-level2 min-w-max"
+                className={cn(menuBoxVariants())}
               >
-                {/* childrenでlist表示 */}
-                <ul className="bg-surface-container px-padding-12 py-padding-8">{children}</ul>
-              </div>
+                {children({
+                  role: match(role)
+                    .returnType<DropdownMenuItemRole>()
+                    .with("menu", () => "menuitem")
+                    .with("menucheckbox", () => "menuitemcheckbox")
+                    .with("menuradio", () => "menuitemradio")
+                    .otherwise(() => "option"),
+                  getItemProps,
+                })}
+              </ul>
             </FloatingFocusManager>
           </FloatingPortal>
         )}
       </div>
     );
   },
+);
+
+const menuBoxVariants = cva(
+  "z-level2 min-w-[112px] max-w-[280px] rounded-radius-xs bg-surface-container px-padding-12 py-padding-8",
 );
