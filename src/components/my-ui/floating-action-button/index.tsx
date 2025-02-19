@@ -1,6 +1,5 @@
 import { useCssVariable } from "@/hooks/use-css-variable";
 import { cn } from "@/lib/utils";
-import { getElementOrThrow } from "@/utils/get-element-or-throw";
 import { cva } from "class-variance-authority";
 import { motion } from "motion/react";
 import type { ComponentProps, ReactElement, ReactNode } from "react";
@@ -45,8 +44,7 @@ export const FloatingActionButton = ({
 }: Props) => {
   const getComponent = () => {
     if (props.tag) {
-      const tag = getElementOrThrow(props.tag);
-      return tag;
+      return props.tag;
     }
     const type = props.type ? props.type : "button";
     return (

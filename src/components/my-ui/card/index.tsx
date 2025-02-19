@@ -1,5 +1,4 @@
 import { cn } from "@/lib/utils";
-import { getElementOrThrow } from "@/utils/get-element-or-throw";
 import { omit } from "@/utils/object";
 import { cva } from "class-variance-authority";
 import { motion } from "motion/react";
@@ -34,11 +33,10 @@ export const Card = ({
       return <motion.button type={type} {...omit(props, ["mode", "type"])} disabled={disabled} />;
     }
     if (props.mode === "link") {
-      const tag = getElementOrThrow(props.tag);
       if (disabled) {
         return <div aria-disabled />;
       }
-      return tag;
+      return props.tag;
     }
     return <motion.div {...omit(props, ["mode"])} aria-disabled={disabled} />;
   };

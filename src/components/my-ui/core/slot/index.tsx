@@ -1,5 +1,4 @@
-import { getElementOrThrow } from "@/utils/get-element-or-throw";
-import { type HTMLAttributes, type ReactNode, type Ref, cloneElement } from "react";
+import { type HTMLAttributes, type ReactNode, type Ref, cloneElement, isValidElement } from "react";
 
 type Props = { element: ReactNode; ref?: Ref<HTMLElement> } & HTMLAttributes<HTMLElement>;
 
@@ -14,4 +13,13 @@ type Props = { element: ReactNode; ref?: Ref<HTMLElement> } & HTMLAttributes<HTM
 export const Slot = ({ element, children, ...props }: Props) => {
   // elementがJSXタグか判定し、cloneElementを実行
   return cloneElement(getElementOrThrow(element), props, children);
+};
+
+/** elementがJSXタグなら値を返し、そうでなければエラーを投げる */
+const getElementOrThrow = (element: ReactNode) => {
+  // isValidElementでelementがJSXタグか判定
+  if (isValidElement(element)) {
+    return element;
+  }
+  throw new Error("children must be a JSX tag");
 };
