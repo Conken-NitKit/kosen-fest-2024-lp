@@ -62,14 +62,6 @@
   --color-surface-container-high: var(--surface-container-high);
   --color-surface-container-highest: var(--surface-container-highest);
 
-  /* このあたりにサイズを追加 */
-  --spacing-container-40: 40px;
-  --spacing-container-56: 56px;
-  --spacing-container-96: 96px;
-
-  --spacing-icon-24: 24px;
-  --spacing-icon-36: 36px;
-
   --spacing-padding-8: 8px;
   --spacing-padding-12: 12px;
   --spacing-padding-16: 16px;
@@ -78,13 +70,13 @@
   --spacing-spacer-small: 16px;
   --spacing-spacer-normal: 24px;
 
-  --radius-none: 0px;
-  --radius-xs: 4px;
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-xl: 28px;
-  --radius-full: calc(infinity * 1px);
+  --radius-radius-none: 0px;
+  --radius-radius-xs: 4px;
+  --radius-radius-sm: 8px;
+  --radius-radius-md: 12px;
+  --radius-radius-lg: 16px;
+  --radius-radius-xl: 28px;
+  --radius-radius-full: calc(infinity * 1px);
 
   /* Dark Mode でも影の色は変化しないようにする */
   --shadow-flat: 8px 8px 16px 0 rgba(0, 0, 0, 0.25);
@@ -111,7 +103,6 @@
   --z-index-level0: 0;
 }
 
-/* Tailwind以外から利用したいCSSを定義 */
 :root {
   --brightness-active: 0.95;
   --brightness-press: 0.9;

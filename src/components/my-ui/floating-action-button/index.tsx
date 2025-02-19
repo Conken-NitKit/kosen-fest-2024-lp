@@ -90,13 +90,13 @@ const buttonVariants = cva(
         tertiary: "bg-tertiary-container text-on-tertiary-container",
       },
       size: {
-        sm: "size-container-40 rounded-md",
-        md: "size-container-56 rounded-lg",
-        lg: "size-container-96 rounded-xl",
+        sm: "size-[40px] rounded-radius-md",
+        md: "size-[56px] rounded-radius-lg",
+        lg: "size-[96px] rounded-radius-xl",
       },
       shape: {
         default: "",
-        circle: "rounded-full",
+        circle: "rounded-radius-full",
       },
       design: {
         flat: "shadow-flat",
@@ -109,9 +109,9 @@ const buttonVariants = cva(
 const iconVariants = cva("", {
   variants: {
     size: {
-      sm: "size-icon-24",
-      md: "size-icon-24",
-      lg: "size-icon-36",
+      sm: "size-[24px]",
+      md: "size-[24px]",
+      lg: "size-[36px]",
     },
   },
 });
