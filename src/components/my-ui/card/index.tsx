@@ -1,18 +1,13 @@
 import { cn } from "@/lib/utils";
-import { getElementOrThrow } from "@/utils/get-element-or-throw";
 import { omit } from "@/utils/object";
 import { cva } from "class-variance-authority";
 import { motion } from "motion/react";
-import {
-  type ComponentProps,
-  type PropsWithChildren,
-  type ReactElement,
-  cloneElement,
-} from "react";
+import type { ComponentProps, PropsWithChildren, ReactElement } from "react";
+import { Slot } from "../core/slot";
 
 type Props = {
   color: "elevated" | "filled" | "outlined";
-  elevation: "flat" | "clay";
+  design: "flat" | "clay";
   className?: string;
   disabled?: boolean;
 } & (
@@ -24,35 +19,33 @@ type Props = {
 );
 export const Card = ({
   color,
-  elevation,
+  design,
   className,
+  // menu-items
   children,
   disabled,
   ...props
 }: PropsWithChildren<Props>) => {
-  const getComponent = () => {
+  const getTag = () => {
     // 型ガードの仕様で分割代入して mode === "button" としてpropsを絞り込むことはできないのでこうする
     if (props.mode === "button") {
       const type = props.type ? props.type : "button";
       return <motion.button type={type} {...omit(props, ["mode", "type"])} disabled={disabled} />;
     }
     if (props.mode === "link") {
-      const tag = getElementOrThrow(props.tag);
       if (disabled) {
         return <div aria-disabled />;
       }
-      return tag;
+      return props.tag;
     }
     return <motion.div {...omit(props, ["mode"])} aria-disabled={disabled} />;
   };
 
-  return cloneElement(
-    // elementをJSX形式で渡すと上手く動かない
-    getComponent(),
-    {
-      className: cn(cardVariants({ color, elevation, mode: props.mode }), className),
-    },
-    children,
+  // elementをJSX形式で渡すと上手く動かない
+  return (
+    <Slot element={getTag()} className={cn(cardVariants({ color, design, mode: props.mode }))}>
+      {children}
+    </Slot>
   );
 };
 
@@ -64,7 +57,7 @@ const cardVariants = cva("", {
       filled: "",
       outlined: "",
     },
-    elevation: {
+    design: {
       flat: "",
       clay: "",
     },
@@ -73,6 +66,10 @@ const cardVariants = cva("", {
       button: "",
       draggable: "",
       link: "",
+    },
+    disabled: {
+      true: "",
+      false: "",
     },
   },
   defaultVariants: {

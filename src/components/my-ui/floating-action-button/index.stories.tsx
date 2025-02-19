@@ -7,17 +7,9 @@ type Story = StoryObj<typeof FloatingActionButton>;
 
 export const Surface: Story = {};
 
-export const Disabled: Story = {
-  args: { disabled: true },
-};
-
 export const Link: Story = {
   // argsを使って指定するとなぜかエラーになったのでその対策でrender使ってる
   render: (args) => <FloatingActionButton {...args} tag={<NextLink href="/" />} />,
-};
-
-export const DisabledLink: Story = {
-  render: (args) => <FloatingActionButton disabled {...args} tag={<NextLink href="/" />} />,
 };
 
 export default {
@@ -27,8 +19,8 @@ export default {
     color: "surface",
     size: "md",
     shape: "default",
-    elevation: "flat",
+    design: "flat",
     type: "button",
-    icon: ({ className }) => <Pencil className={className} />,
+    children: ({ className }) => <Pencil className={className} />,
   },
 } satisfies Meta<typeof FloatingActionButton>;

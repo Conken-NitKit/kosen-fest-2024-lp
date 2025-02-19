@@ -1,0 +1,17 @@
+export const font = {
+  displayLarge: "font-roboto font-normal text-[57px]/[64px] -tracking-[0.25px]",
+  displayMedium: "font-roboto font-normal text-[45px]/[52px] tracking-[0px]",
+  displaySmall: "font-roboto font-normal text-[36px]/[44px] tracking-[0px]",
+  headingLarge: "font-roboto font-normal text-[32px]/[40px] tracking-[0px]",
+  headingMedium: "font-roboto font-normal text-[28px]/[36px] tracking-[0px]",
+  headingSmall: "font-roboto font-normal text-[24px]/[32px] tracking-[0px]",
+  titleLarge: "font-roboto font-normal text-[22px]/[28px] tracking-[0px]",
+  titleMedium: "font-roboto font-medium text-[16px]/[24px] tracking-[0.15px]",
+  titleSmall: "font-roboto font-medium text-[14px]/[20px] tracking-[0.1px]",
+  bodyLarge: "font-roboto font-normal text-[16px]/[24px] tracking-[0.5px]",
+  bodyMedium: "font-roboto font-normal text-[14px]/[20px] tracking-[0.25px]",
+  bodySmall: "font-roboto font-normal text-[12px]/[16px] tracking-[0.4px]",
+  labelLarge: "font-roboto font-medium text-[14px]/[20px] tracking-[0.1px]",
+  labelMedium: "font-roboto font-medium text-[12px]/[16px] tracking-[0.5px]",
+  labelSmall: "font-roboto font-medium text-[11px]/[16px] tracking-[0.5px]",
+};
