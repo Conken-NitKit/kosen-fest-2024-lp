@@ -13,24 +13,26 @@ export default {
   title: "my-ui/dropdown-menu",
   component: DropdownMenu,
   args: {
-    trigger: (
+    trigger: () => (
       <FloatingActionButton size="md" shape="default" color="surface" design="flat">
         {(props) => <Pencil {...props} />}
       </FloatingActionButton>
     ),
-    children: (props) => (
-      <DropdownMenuItem
-        label="Menu Item"
-        leadingIcon={(props) => <Scissors {...props} />}
-        trailingIcon={({ className }) => (
-          <div className={cn("flex", className)}>
-            <Command />
-            <span>X</span>
-          </div>
-        )}
-        {...props}
-      />
-    ),
-    design: "flat",
+    children: (props) =>
+      Array.from({ length: 4 }).map((_, index) => (
+        <DropdownMenuItem
+          // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+          key={index}
+          label={`${index} Menu Item`}
+          leadingIcon={(props) => <Scissors {...props} />}
+          trailingIcon={({ className }) => (
+            <div className={cn("flex", className)}>
+              <Command />
+              <span>X</span>
+            </div>
+          )}
+          {...props}
+        />
+      )),
   },
 } satisfies Meta<typeof DropdownMenu>;
