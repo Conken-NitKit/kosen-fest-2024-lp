@@ -12,11 +12,13 @@ export const Link: Story = {
   render: (args) => (
     <FloatingActionButton
       {...args}
-      link={({ a }) => (
-        <NextLink href="/" passHref legacyBehavior>
-          {a}
-        </NextLink>
-      )}
+      link={{
+        render: ({ children }) => (
+          <NextLink href="/" passHref legacyBehavior>
+            {children}
+          </NextLink>
+        ),
+      }}
     />
   ),
 };
