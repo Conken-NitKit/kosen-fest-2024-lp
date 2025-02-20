@@ -6,7 +6,7 @@ type Props = {
 } & ComponentProps<typeof motion.a>;
 /**
  * motion.aをベースにしたリンクコンポーネント
- * @param props.render - 子要素をレンダリングするための関数（オプション）
+ * @param props.render - 子要素をレンダリングするための関数（オプション）next/linkを使う時はpassHrefとlegacyBehaviorを設定する必要がある
  * @param props.props - motion.aコンポーネントに渡されるプロパティ（オプション）
  */
 export const Link = ({ render, ...props }: Props) => {

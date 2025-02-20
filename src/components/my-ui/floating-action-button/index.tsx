@@ -29,7 +29,7 @@ type Props = {
  * @param props.design - ボタンのデザイン ("flat" | "clay")
  * @param props.children - ボタンのアイコン
  * @param props.className - ボタンの位置やマージンなどを制御する必要があるときに使う
- * @param props.link - Linkにしたい時に指定。next/linkを使う時はpassHrefとlegacyBehaviorを設定する必要がある
+ * @param props.link - Linkにしたい時に指定。
  */
 export const FloatingActionButton = ({
   size,
