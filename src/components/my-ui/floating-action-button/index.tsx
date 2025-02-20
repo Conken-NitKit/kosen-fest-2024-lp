@@ -1,4 +1,3 @@
-import { useCssVariable } from "@/hooks/use-css-variable";
 import { cn } from "@/lib/utils";
 import { cva } from "class-variance-authority";
 import { motion } from "motion/react";
@@ -47,24 +46,7 @@ export const FloatingActionButton = ({
       return props.tag;
     }
     const type = props.type ? props.type : "button";
-    return (
-      <motion.button
-        // whileTapだけだとfilterがなぜか変わらないのでこうする
-        variants={{
-          normal: { filter: "brightness(1)" },
-          tap: { filter: "brightness(var(--brightness-press))", scale: 0.9 },
-          // なぜかエラーが出るのでゴリ押し
-          active: { filter: `brightness(${useCssVariable("--brightness-active", (v) => v)})` },
-        }}
-        type={type}
-        initial="normal"
-        whileTap="tap"
-        // classと競合するのでこちらにまとめる
-        whileHover="active"
-        whileFocus="active"
-        {...props}
-      />
-    );
+    return <motion.button type={type} whileTap={{ scale: 0.9 }} {...props} />;
   };
 
   return (
@@ -78,7 +60,7 @@ export const FloatingActionButton = ({
 };
 
 const buttonVariants = cva(
-  "flex items-center justify-center outline-outline transition cursor-pointer z-level1",
+  "flex items-center justify-center outline-outline transition cursor-pointer z-level1 active:brightness-press hover:brightness-hover-focus focus:brightness-hover-focus",
   {
     variants: {
       color: {
