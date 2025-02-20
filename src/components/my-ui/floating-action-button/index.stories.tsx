@@ -9,7 +9,16 @@ export const Surface: Story = {};
 
 export const Link: Story = {
   // argsを使って指定するとなぜかエラーになったのでその対策でrender使ってる
-  render: (args) => <FloatingActionButton {...args} tag={<NextLink href="/" />} />,
+  render: (args) => (
+    <FloatingActionButton
+      {...args}
+      link={({ a }) => (
+        <NextLink href="/" passHref legacyBehavior>
+          {a}
+        </NextLink>
+      )}
+    />
+  ),
 };
 
 export default {

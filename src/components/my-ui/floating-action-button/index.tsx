@@ -1,8 +1,7 @@
 import { cn } from "@/lib/utils";
 import { cva } from "class-variance-authority";
 import { motion } from "motion/react";
-import type { ComponentProps, ReactElement, ReactNode } from "react";
-import { Slot } from "../core/slot";
+import type { ComponentProps, ReactNode } from "react";
 
 type IconProps = {
   className: string;
@@ -16,9 +15,13 @@ type Props = {
   children: (props: IconProps) => ReactNode;
   className?: string;
 } & (
-  | { tag: ReactElement }
+  | {
+      link:
+        | Omit<ComponentProps<typeof motion.a>, "children">
+        | ((props: { a: ReactNode }) => ReactNode);
+    }
   // { tag: undefined }だと引数が必要になるので注意
-  | ({ tag?: undefined } & Omit<ComponentProps<typeof motion.button>, "children">)
+  | ({ link?: undefined } & Omit<ComponentProps<typeof motion.button>, "children">)
 );
 /**
  * 画面上で最も一般的または重要なアクションにはFABを使用する
@@ -29,7 +32,7 @@ type Props = {
  * @param props.design - ボタンのデザイン ("flat" | "clay")
  * @param props.children - ボタンのアイコン
  * @param props.className - ボタンの位置やマージンなどを制御する必要があるときに使う
- * @param props.tag - Linkにしたい時などカスタムタグを使用する場合に指定
+ * @param props.link - Linkにしたい時に指定。next/linkを使う時はpassHrefとlegacyBehaviorを設定する必要がある
  */
 export const FloatingActionButton = ({
   size,
@@ -41,24 +44,47 @@ export const FloatingActionButton = ({
   children,
   ...props
 }: Props) => {
-  const getComponent = () => {
-    if (props.tag) {
-      return props.tag;
-    }
-    const type = props.type ? props.type : "button";
-    return <motion.button type={type} whileTap={{ scale: 0.9 }} {...props} />;
-  };
+  // disabledは状態として不要なため設定しない
 
-  return (
-    // Linkをアニメーションできるようにmotion.divでラップ
-    <motion.div className="inline-flex items-center justify-center" whileTap={{ scale: 0.9 }}>
-      <Slot
-        element={getComponent()}
+  // ボタンとして扱う時
+  if (!props.link) {
+    const type = props.type ? props.type : "button";
+    return (
+      <motion.button
+        type={type}
+        whileTap={{ scale: 0.9 }}
         className={cn(buttonVariants({ color, size, shape, design }), className)}
+        {...props}
       >
         {children({ className: cn(iconVariants({ size })) })}
-      </Slot>
-    </motion.div>
+      </motion.button>
+    );
+  }
+
+  // linkを関数として扱う時
+  if (typeof props.link === "function") {
+    return props.link({
+      a: (
+        // biome-ignore lint/a11y/useValidAnchor: <explanation>
+        <motion.a
+          className={cn(buttonVariants({ color, size, shape, design }), className)}
+          whileTap={{ scale: 0.9 }}
+        >
+          {children({ className: cn(iconVariants({ size })) })}
+        </motion.a>
+      ),
+    });
+  }
+
+  // linkをpropsとして扱う時
+  return (
+    <motion.a
+      {...props.link}
+      className={cn(buttonVariants({ color, size, shape, design }), className)}
+      whileTap={{ scale: 0.9 }}
+    >
+      {children({ className: cn(iconVariants({ size })) })}
+    </motion.a>
   );
 };
 
