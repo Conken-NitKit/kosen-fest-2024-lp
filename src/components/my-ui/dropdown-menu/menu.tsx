@@ -182,5 +182,5 @@ export const DropdownMenu = memo(
 );
 
 const menuBoxVariants = cva(
-  "z-level2 min-w-[112px] max-w-[280px] rounded-radius-xs bg-surface-container px-padding-12 py-padding-8 outline-0",
+  "z-level2 min-w-[112px] max-w-[280px] rounded-radius-xs bg-surface-container py-padding-8 outline-0",
 );
