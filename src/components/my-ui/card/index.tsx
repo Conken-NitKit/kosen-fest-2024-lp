@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import { omit } from "@/utils/object";
 import { cva } from "class-variance-authority";
 import { motion } from "motion/react";
-import type { ComponentProps, PropsWithChildren, ReactElement } from "react";
+import type { ComponentProps, PropsWithChildren, ReactNode } from "react";
 import { Slot } from "../core/slot";
 
 type Props = {
@@ -15,7 +15,7 @@ type Props = {
   // TODO: draggableは面倒なので必要になったら実装する。
   | ({ mode?: "default" | "draggable" } & ComponentProps<typeof motion.div>)
   // 入れ子のaタグも面倒なので避ける
-  | { mode: "link"; tag: ReactElement }
+  | { mode: "link"; tag: ReactNode }
 );
 export const Card = ({
   color,
