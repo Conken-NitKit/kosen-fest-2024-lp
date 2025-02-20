@@ -1,6 +1,6 @@
 import { type HTMLAttributes, type ReactNode, type Ref, cloneElement, isValidElement } from "react";
 
-type Props = { element: ReactNode; ref?: Ref<HTMLElement> } & HTMLAttributes<HTMLElement>;
+type Props<T, U> = { element: ReactNode; ref?: Ref<U>; children?: ReactNode } & T;
 
 /**
  * `element`を基に、異なる`props`と`children`を持ったReact要素を作成するコンポーネント
@@ -10,15 +10,23 @@ type Props = { element: ReactNode; ref?: Ref<HTMLElement> } & HTMLAttributes<HTM
  * @param props.children - 上書きしたい`children`
  * @param props.props - 上書きしたい`props`
  */
-export const Slot = ({ element, children, ...props }: Props) => {
+export const Slot = <T extends HTMLAttributes<HTMLElement>, U extends HTMLElement = HTMLElement>({
+  element,
+  children,
+  ...props
+}: Props<T, U>) => {
   // elementがJSXタグか判定し、cloneElementを実行
-  return cloneElement(getElementOrThrow(element), props, children);
+  return cloneElement(
+    getElementOrThrow<Omit<Props<T, U>, "element" | "children">>(element),
+    props,
+    children,
+  );
 };
 
 /** elementがJSXタグなら値を返し、そうでなければエラーを投げる */
-const getElementOrThrow = (element: ReactNode) => {
+const getElementOrThrow = <T,>(element: ReactNode) => {
   // isValidElementでelementがJSXタグか判定
-  if (isValidElement(element)) {
+  if (isValidElement<T>(element)) {
     return element;
   }
   throw new Error("children must be a JSX tag");
