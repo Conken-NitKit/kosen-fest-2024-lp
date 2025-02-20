@@ -50,12 +50,15 @@ export const FloatingActionButton = ({
   };
 
   return (
-    <Slot
-      element={getComponent()}
-      className={cn(buttonVariants({ color, size, shape, design }), className)}
-    >
-      {children({ className: cn(iconVariants({ size })) })}
-    </Slot>
+    // Linkをアニメーションできるようにmotion.divでラップ
+    <motion.div className="inline-flex items-center justify-center" whileTap={{ scale: 0.9 }}>
+      <Slot
+        element={getComponent()}
+        className={cn(buttonVariants({ color, size, shape, design }), className)}
+      >
+        {children({ className: cn(iconVariants({ size })) })}
+      </Slot>
+    </motion.div>
   );
 };
 
