@@ -10,7 +10,7 @@ type Story = StoryObj<typeof DropdownMenu>;
 export const Default: Story = {};
 
 export default {
-  title: "my-ui/dropdown-menu",
+  title: "my-ui/dropdown-menu/dropdown-menu",
   component: DropdownMenu,
   args: {
     trigger: () => (
