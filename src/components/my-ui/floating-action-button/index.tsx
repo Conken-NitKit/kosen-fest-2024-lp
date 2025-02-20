@@ -49,7 +49,6 @@ export const FloatingActionButton = ({
     return (
       <motion.button
         type={type}
-        whileTap={{ scale: 0.9 }}
         className={cn(buttonVariants({ color, size, shape, design }), className)}
         {...props}
       >
@@ -64,7 +63,6 @@ export const FloatingActionButton = ({
       render={props.link.render}
       {...props.link.props}
       className={cn(buttonVariants({ color, size, shape, design }), className)}
-      whileTap={{ scale: 0.9 }}
     >
       {children({ className: cn(iconVariants({ size })) })}
     </Link>
