@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils";
 import { cva } from "class-variance-authority";
 import { motion } from "motion/react";
 import type { ComponentProps, ReactNode } from "react";
+import { Link, type LinkProps } from "../core/link";
 
 type IconProps = {
   className: string;
@@ -15,11 +16,7 @@ type Props = {
   children: (props: IconProps) => ReactNode;
   className?: string;
 } & (
-  | {
-      link:
-        | Omit<ComponentProps<typeof motion.a>, "children">
-        | ((props: { a: ReactNode }) => ReactNode);
-    }
+  | { link: LinkProps }
   // { tag: undefined }だと引数が必要になるので注意
   | ({ link?: undefined } & Omit<ComponentProps<typeof motion.button>, "children">)
 );
@@ -61,30 +58,16 @@ export const FloatingActionButton = ({
     );
   }
 
-  // linkを関数として扱う時
-  if (typeof props.link === "function") {
-    return props.link({
-      a: (
-        // biome-ignore lint/a11y/useValidAnchor: <explanation>
-        <motion.a
-          className={cn(buttonVariants({ color, size, shape, design }), className)}
-          whileTap={{ scale: 0.9 }}
-        >
-          {children({ className: cn(iconVariants({ size })) })}
-        </motion.a>
-      ),
-    });
-  }
-
-  // linkをpropsとして扱う時
+  // linkとして扱う時
   return (
-    <motion.a
-      {...props.link}
+    <Link
+      render={props.link.render}
+      {...props.link.props}
       className={cn(buttonVariants({ color, size, shape, design }), className)}
       whileTap={{ scale: 0.9 }}
     >
       {children({ className: cn(iconVariants({ size })) })}
-    </motion.a>
+    </Link>
   );
 };
 
