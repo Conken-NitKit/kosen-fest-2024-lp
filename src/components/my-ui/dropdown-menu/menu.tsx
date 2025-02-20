@@ -1,4 +1,3 @@
-import { cn } from "@/lib/utils";
 import {
   FloatingFocusManager,
   FloatingList,
@@ -14,7 +13,6 @@ import {
   useRole,
   useTypeahead,
 } from "@floating-ui/react";
-import { cva } from "class-variance-authority";
 import {
   Children,
   type HTMLAttributes,
@@ -26,7 +24,7 @@ import {
 } from "react";
 import { match } from "ts-pattern";
 import { Slot } from "../core/slot";
-import type { DropdownMenuItemRole } from "./menu-item";
+import type { Props as DropdownMenuItemProps, DropdownMenuItemRole } from "./menu-item";
 
 type Props = {
   trigger: (props: { selectedLabel: string | null }) => ReactNode;
@@ -56,6 +54,7 @@ export const DropdownMenu = memo(
   }: Props) => {
     const [isOpen, setIsOpen] = useState(false);
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
+    // メニューの用途の場合これは無効化される
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
     // MenuItemの一覧。getItemPropsからコンテキスト経由で設定
@@ -105,11 +104,15 @@ export const DropdownMenu = memo(
 
     // ユーザーが選択した時選択されたものを更新して閉じる
     const handleSelect = (index: number) => {
-      setSelectedIndex(index);
+      // メニューの用途でない場合のみselect状態を管理する
+      if (role === "select" || role === "combobox") {
+        setSelectedIndex(index);
+      }
       setIsOpen(false);
     };
 
     const trigger = renderTrigger({
+      // メニューの用途の場合このラベルは常にnullになる
       selectedLabel: selectedIndex ? menuItemLabelRef.current[selectedIndex] : null,
     });
 
@@ -143,21 +146,22 @@ export const DropdownMenu = memo(
                   ref={refs.setFloating}
                   style={floatingStyles}
                   {...getFloatingProps()}
-                  className={cn(menuBoxVariants())}
+                  className="z-level2 inline-flex min-w-[112px] max-w-[280px] flex-col rounded-radius-xs bg-surface-container py-padding-8 outline-0"
                 >
                   {Children.map(
-                    children as unknown as ReactElement<HTMLAttributes<HTMLElement>>,
+                    children as unknown as ReactElement<DropdownMenuItemProps>,
                     (child, i) => (
-                      <Slot
+                      <Slot<Omit<DropdownMenuItemProps, "label" | "role">>
                         element={child}
                         {...getItemProps({
                           ...child.props,
                           // 選択時の処理
-                          onClick: (e) => {
+                          // MouseEventにはジェネリクスがなかったのでこう
+                          onClick: (e: React.MouseEvent<HTMLLIElement>) => {
                             child.props.onClick?.(e);
                             handleSelect(i);
                           },
-                          onKeyDown: (e) => {
+                          onKeyDown: (e: React.KeyboardEvent<HTMLLIElement>) => {
                             child.props.onKeyDown?.(e);
                             if (e.key === "Enter") {
                               // ここでe.preventDefaultしないとバグる
@@ -166,6 +170,7 @@ export const DropdownMenu = memo(
                             }
                           },
                         })}
+                        selected={child.props.disabled ? false : selectedIndex === i}
                         // ホバーやキーボード操作に応じてフォーカス
                         tabIndex={i === activeIndex ? 0 : -1}
                       />
@@ -179,8 +184,4 @@ export const DropdownMenu = memo(
       </div>
     );
   },
-);
-
-const menuBoxVariants = cva(
-  "z-level2 min-w-[112px] max-w-[280px] rounded-radius-xs bg-surface-container px-padding-12 py-padding-8 outline-0",
 );

@@ -1,4 +1,4 @@
-// あるオブジェクトから特定のプロパティを取り除く
+/** あるオブジェクトから特定のプロパティを取り除く */
 export const omit = <T extends Record<string, unknown>, K extends keyof T>(
   obj: T,
   keys: K[],
