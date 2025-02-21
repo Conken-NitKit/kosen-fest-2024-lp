@@ -3,6 +3,7 @@ import {
   FloatingList,
   FloatingPortal,
   type UseFloatingOptions,
+  type UseInteractionsReturn,
   flip,
   shift,
   useClick,
@@ -14,23 +15,25 @@ import {
   useTypeahead,
 } from "@floating-ui/react";
 import {
-  Children,
   type HTMLAttributes,
   type ReactElement,
   type ReactNode,
   memo,
+  useCallback,
   useRef,
   useState,
 } from "react";
 import { match } from "ts-pattern";
 import { Slot } from "../core/slot";
-import type { Props as DropdownMenuItemProps, DropdownMenuItemRole } from "./menu-item";
+import { DropdownMenuProvider } from "./provider";
+
+export type DropdownMenuRole = "menu" | "select" | "combobox" | "menucheckbox" | "menuradio";
 
 type Props = {
   trigger: (props: { selectedLabel: string | null }) => ReactNode;
-  children: (props: { role: DropdownMenuItemRole }) => ReactNode;
+  children: ReactNode;
   // roleは指定できるようにする
-  role?: "menu" | "select" | "combobox" | "menucheckbox" | "menuradio";
+  role?: DropdownMenuRole;
   loop?: boolean;
   onOpenChange?: UseFloatingOptions["onOpenChange"];
 };
@@ -47,7 +50,7 @@ type Props = {
 export const DropdownMenu = memo(
   ({
     trigger: renderTrigger,
-    children: renderChildren,
+    children,
     onOpenChange: handleOpenChange,
     role = "menu",
     loop,
@@ -103,26 +106,46 @@ export const DropdownMenu = memo(
     ]);
 
     // ユーザーが選択した時選択されたものを更新して閉じる
-    const handleSelect = (index: number) => {
-      // メニューの用途でない場合のみselect状態を管理する
-      if (role === "select" || role === "combobox") {
-        setSelectedIndex(index);
-      }
-      setIsOpen(false);
-    };
+    const handleSelect = useCallback(
+      (index: number) => {
+        // メニューの用途でない場合のみselect状態を管理する
+        if (role === "select" || role === "combobox") {
+          setSelectedIndex(index);
+        }
+        setIsOpen(false);
+      },
+      [role],
+    );
+
+    const getItemPropsFactory = useCallback(
+      (index: number) => {
+        const fn: UseInteractionsReturn["getItemProps"] = (props) => {
+          return getItemProps({
+            ...props,
+            // 選択時の処理
+            // MouseEventにはジェネリクスがなかったのでこう
+            onClick: (e: React.MouseEvent<HTMLLIElement>) => {
+              props?.onClick?.(e);
+              handleSelect(index);
+            },
+            onKeyDown: (e: React.KeyboardEvent<HTMLLIElement>) => {
+              props?.onKeyDown?.(e);
+              if (e.key === "Enter") {
+                // ここでe.preventDefaultしないとバグる
+                e.preventDefault();
+                handleSelect(index);
+              }
+            },
+          });
+        };
+        return fn;
+      },
+      [getItemProps, handleSelect],
+    );
 
     const trigger = renderTrigger({
       // メニューの用途の場合このラベルは常にnullになる
       selectedLabel: selectedIndex ? menuItemLabelRef.current[selectedIndex] : null,
-    });
-
-    const children = renderChildren({
-      role: match(role)
-        .returnType<DropdownMenuItemRole>()
-        .with("menu", () => "menuitem")
-        .with("menucheckbox", () => "menuitemcheckbox")
-        .with("menuradio", () => "menuitemradio")
-        .otherwise(() => "option"),
     });
 
     return (
@@ -137,50 +160,31 @@ export const DropdownMenu = memo(
         />
         {/* 背景は暗くしない。スクロールは固定せず、別の要素をクリックできる */}
         {/* 閉じている時、hidden等のスタイルによる制御でなく、要素を非表示にする */}
-        <FloatingList elementsRef={menuItemRef} labelsRef={menuItemLabelRef}>
-          {isOpen && (
-            <FloatingPortal>
-              {/* modal={true}だと、modal内のみのフォーカスに制限されるので無効にする */}
-              <FloatingFocusManager context={context} modal={false}>
-                <ul
-                  ref={refs.setFloating}
-                  style={floatingStyles}
-                  {...getFloatingProps()}
-                  className="z-level2 inline-flex min-w-[112px] max-w-[280px] flex-col rounded-radius-xs bg-surface-container py-padding-8 outline-0"
-                >
-                  {Children.map(
-                    children as unknown as ReactElement<DropdownMenuItemProps>,
-                    (child, i) => (
-                      <Slot<Omit<DropdownMenuItemProps, "label" | "role">>
-                        element={child}
-                        {...getItemProps({
-                          ...child.props,
-                          // 選択時の処理
-                          // MouseEventにはジェネリクスがなかったのでこう
-                          onClick: (e: React.MouseEvent<HTMLLIElement>) => {
-                            child.props.onClick?.(e);
-                            handleSelect(i);
-                          },
-                          onKeyDown: (e: React.KeyboardEvent<HTMLLIElement>) => {
-                            child.props.onKeyDown?.(e);
-                            if (e.key === "Enter") {
-                              // ここでe.preventDefaultしないとバグる
-                              e.preventDefault();
-                              handleSelect(i);
-                            }
-                          },
-                        })}
-                        selected={child.props.disabled ? false : selectedIndex === i}
-                        // ホバーやキーボード操作に応じてフォーカス
-                        tabIndex={i === activeIndex ? 0 : -1}
-                      />
-                    ),
-                  )}
-                </ul>
-              </FloatingFocusManager>
-            </FloatingPortal>
-          )}
-        </FloatingList>
+        <DropdownMenuProvider
+          getItemPropsFactory={getItemPropsFactory}
+          activeIndex={activeIndex}
+          selectedIndex={selectedIndex}
+          role={role}
+        >
+          <FloatingList elementsRef={menuItemRef} labelsRef={menuItemLabelRef}>
+            {isOpen && (
+              // createPortalでここだけdocument.body内にレンダリング
+              <FloatingPortal>
+                {/* modal={true}だと、modal内のみのフォーカスに制限されるので無効にする */}
+                <FloatingFocusManager context={context} modal={false}>
+                  <ul
+                    ref={refs.setFloating}
+                    style={floatingStyles}
+                    {...getFloatingProps()}
+                    className="z-level2 inline-flex min-w-[112px] max-w-[280px] flex-col rounded-radius-xs bg-surface-container py-padding-8 outline-0"
+                  >
+                    {children}
+                  </ul>
+                </FloatingFocusManager>
+              </FloatingPortal>
+            )}
+          </FloatingList>
+        </DropdownMenuProvider>
       </div>
     );
   },

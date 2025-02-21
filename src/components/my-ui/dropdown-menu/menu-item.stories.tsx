@@ -1,3 +1,4 @@
+import { MotionLink } from "@/components/ui/motion-link";
 import { cn } from "@/lib/utils";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Command, Scissors } from "lucide-react";
@@ -42,11 +43,18 @@ export const Focusable: Story = {
   },
 };
 
+export const Link: Story = {
+  args: {
+    element: <MotionLink href="/" />,
+  },
+};
+
 export default {
   title: "my-ui/dropdown-menu/dropdown-menu-item",
   component: DropdownMenuItem,
   args: {
     label: "Menu Item",
+    role: "menuitem",
     selected: false,
     disabled: false,
   },
