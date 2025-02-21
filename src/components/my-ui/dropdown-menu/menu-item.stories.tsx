@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Command, Scissors } from "lucide-react";
+import NextLink from "next/link";
 import { DropdownMenuItem } from "./menu-item";
 
 type Story = StoryObj<typeof DropdownMenuItem>;
@@ -42,11 +43,16 @@ export const Focusable: Story = {
   },
 };
 
+export const Link: Story = {
+  render: (args) => <DropdownMenuItem {...args} element={<NextLink href="/" />} />,
+};
+
 export default {
   title: "my-ui/dropdown-menu/dropdown-menu-item",
   component: DropdownMenuItem,
   args: {
     label: "Menu Item",
+    role: "menuitem",
     selected: false,
     disabled: false,
   },

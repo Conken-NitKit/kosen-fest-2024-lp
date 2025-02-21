@@ -1,54 +1,76 @@
 import { font } from "@/config/font";
 import { cn } from "@/lib/utils";
-import { useListItem } from "@floating-ui/react";
 import { cva } from "class-variance-authority";
 import type { ComponentProps, ReactNode } from "react";
+import { Slot } from "../core/slot";
+import type { DropdownMenuItemRole } from "./menu-item.container";
 
-export type DropdownMenuItemRole = "menuitem" | "menuitemcheckbox" | "menuitemradio" | "option";
-
-export type Props = {
+type Props = {
   leadingIcon?: (props: { className: string }) => ReactNode;
   label: string;
   trailingIcon?: (props: { className: string }) => ReactNode;
   role: DropdownMenuItemRole;
   selected?: boolean;
   disabled?: boolean;
+  element?: ReactNode;
 } & Omit<ComponentProps<"li">, "children" | "role" | "className">;
-/**
- * DropdownMenuItemはDropdownMenuとあわせて使う
- * @param props.leadingIcon - クラス名を引数に取る関数で、先頭に表示するアイコンをレンダリングします（オプション）
- * @param props.label - メニューアイテムのラベルテキスト
- * @param props.trailingIcon - クラス名を引数に取る関数で、末尾に表示するアイコンをレンダリングします（オプション）
- * @param props.role - メニューアイテムの役割属性。例："menuitem"、"menuitemcheckbox"、"menuitemradio"、"option"
- * @param props.disabled - メニューアイテムが無効かどうかを示すブール値（オプション）
- */
 export const DropdownMenuItem = ({
   leadingIcon,
   label,
   trailingIcon,
+  role,
   selected,
   disabled,
+  element,
+  tabIndex,
   ...props
 }: Props) => {
-  const item = useListItem({ label: disabled ? null : label });
+  const Content = () => {
+    return (
+      <>
+        {leadingIcon?.({ className: "size-[24px] text-on-surface-variant" })}
+        <span className={cn(font.labelLarge, "text-on-surface")}>{label}</span>
+        {/* 最後のみ右寄せ */}
+        {trailingIcon?.({ className: "size-[24px] ml-auto text-on-surface-variant" })}
+      </>
+    );
+  };
 
+  // リンク等の用途の場合
+  if (element) {
+    return (
+      // story上でないはずのリストマークがなぜかでたので消す
+      <li className="list-none" role="presentation" {...props}>
+        <Slot
+          element={element}
+          className={cn(listVariants({ selected, disabled }))}
+          role={role}
+          aria-disabled={disabled}
+          tabIndex={tabIndex}
+        >
+          <Content />
+        </Slot>
+      </li>
+    );
+  }
+
+  // ただのリストの場合
   return (
     <li
       className={cn(listVariants({ selected, disabled }))}
-      ref={item.ref}
+      role={role}
       aria-disabled={disabled}
+      tabIndex={tabIndex}
       {...props}
     >
-      {leadingIcon?.({ className: "size-[24px] text-on-surface-variant" })}
-      <span className={cn(font.labelLarge, "text-on-surface")}>{label}</span>
-      {/* 最後のみ右寄せ */}
-      {trailingIcon?.({ className: "size-[24px] ml-auto text-on-surface-variant" })}
+      <Content />
     </li>
   );
 };
 
 const listVariants = cva(
-  "inline-flex h-[48px] min-w-[112px] max-w-[280px] items-center gap-padding-12 px-padding-12 aria-disabled:opacity-disabled",
+  // TODO: ここのスタイルの指定は綺麗ではないので改善したい
+  "flex h-[48px] min-h-[48px] min-w-[112px] max-w-[280px] items-center gap-padding-12 px-padding-12 aria-disabled:opacity-disabled",
   {
     variants: {
       disabled: {

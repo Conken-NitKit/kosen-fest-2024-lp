@@ -9,18 +9,7 @@ export const Surface: Story = {};
 
 export const Link: Story = {
   // argsを使って指定するとなぜかエラーになったのでその対策でrender使ってる
-  render: (args) => (
-    <FloatingActionButton
-      {...args}
-      link={{
-        render: ({ children }) => (
-          <NextLink href="/" passHref legacyBehavior>
-            {children}
-          </NextLink>
-        ),
-      }}
-    />
-  ),
+  render: (args) => <FloatingActionButton {...args} element={() => <NextLink href="/" />} />,
 };
 
 export default {
@@ -30,7 +19,6 @@ export default {
     color: "surface",
     size: "md",
     shape: "default",
-    design: "flat",
     type: "button",
     children: ({ className }) => <Pencil className={className} />,
   },
