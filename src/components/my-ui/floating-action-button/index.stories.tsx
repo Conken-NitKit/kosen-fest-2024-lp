@@ -1,4 +1,4 @@
-import { NextMotionLink } from "@/components/ui/next-motion-link";
+import { MotionLink } from "@/components/ui/motion-link";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Pencil } from "lucide-react";
 import { FloatingActionButton } from ".";
@@ -9,7 +9,7 @@ export const Surface: Story = {};
 
 export const Link: Story = {
   // argsを使って指定するとなぜかエラーになったのでその対策でrender使ってる
-  render: (args) => <FloatingActionButton {...args} element={() => <NextMotionLink href="/" />} />,
+  render: (args) => <FloatingActionButton {...args} element={() => <MotionLink href="/" />} />,
 };
 
 export default {
