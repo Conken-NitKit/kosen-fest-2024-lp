@@ -1,6 +1,7 @@
 import { useListItem } from "@floating-ui/react";
-import type { ComponentProps, ReactNode } from "react";
+import type { ComponentProps, HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
 import { match } from "ts-pattern";
+import { Slot } from "../core/slot";
 import { DropdownMenuItem as Presenter } from "./menu-item";
 import { useDropdownMenuContext } from "./provider";
 
@@ -43,14 +44,42 @@ export const DropdownMenuItem = ({
   // ホバーやキーボード操作に応じてフォーカス
   const tabIndex = item.index === menu.activeIndex ? 0 : -1;
 
+  // リンク等の用途の場合
+  if (element) {
+    return (
+      <Presenter
+        {...props}
+        leadingIcon={leadingIcon}
+        label={label}
+        trailingIcon={trailingIcon}
+        disabled={disabled}
+        element={
+          <Slot
+            element={element}
+            {...menu.getItemPropsFactory(item.index)({
+              ...(element as unknown as ReactElement<HTMLAttributes<HTMLElement>>).props,
+              ref: item.ref,
+            })}
+          />
+        }
+        role={role}
+        selected={selected}
+        tabIndex={tabIndex}
+      />
+    );
+  }
+
+  // リストとして使う場合
   return (
     <Presenter
-      {...menu.getItemPropsFactory(item.index)(props)}
+      {...menu.getItemPropsFactory(item.index)({
+        ...props,
+        ref: item.ref,
+      })}
       leadingIcon={leadingIcon}
       label={label}
       trailingIcon={trailingIcon}
       disabled={disabled}
-      element={element}
       role={role}
       selected={selected}
       tabIndex={tabIndex}
