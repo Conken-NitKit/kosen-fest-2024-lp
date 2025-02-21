@@ -69,7 +69,8 @@ export const DropdownMenuItem = ({
 };
 
 const listVariants = cva(
-  "inline-flex h-[48px] min-w-[112px] max-w-[280px] items-center gap-padding-12 px-padding-12 aria-disabled:opacity-disabled",
+  // TODO: ここのスタイルの指定は綺麗ではないので改善したい
+  "flex h-[48px] min-h-[48px] min-w-[112px] max-w-[280px] items-center gap-padding-12 px-padding-12 aria-disabled:opacity-disabled",
   {
     variants: {
       disabled: {

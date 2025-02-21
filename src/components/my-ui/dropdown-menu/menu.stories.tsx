@@ -13,7 +13,7 @@ export const Default: Story = {};
 export const Link: Story = {
   render: (args) => (
     <DropdownMenu {...args}>
-      {Array.from({ length: 4 }).map((_, index) => (
+      {Array.from({ length: 20 }).map((_, index) => (
         <DropdownMenuItem
           // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
           key={index}
@@ -41,7 +41,7 @@ export default {
         {(props) => <Pencil {...props} />}
       </FloatingActionButton>
     ),
-    children: Array.from({ length: 4 }).map((_, index) => (
+    children: Array.from({ length: 20 }).map((_, index) => (
       <DropdownMenuItem
         // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
         key={index}
@@ -55,5 +55,6 @@ export default {
         )}
       />
     )),
+    height: "medium",
   },
 } satisfies Meta<typeof DropdownMenu>;

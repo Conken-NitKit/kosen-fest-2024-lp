@@ -6,6 +6,7 @@ import {
   type UseInteractionsReturn,
   flip,
   shift,
+  size,
   useClick,
   useDismiss,
   useFloating,
@@ -34,6 +35,7 @@ type Props = {
   children: ReactNode;
   // roleは指定できるようにする
   role?: DropdownMenuRole;
+  height?: "medium" | "large";
   loop?: boolean;
   onOpenChange?: UseFloatingOptions["onOpenChange"];
 };
@@ -45,15 +47,17 @@ type Props = {
  * @param props.trigger - 何らかの`button`
  * @param props.children - `DropdownMenuItem`等
  * @param props.role - 入力候補を表示するとき、リストをフィルタリングするための入力も含まれている場合は`"combobox"`、一般用途であれば`"select"`を使用する必要がある（デフォルトは`"menu"`）
+ * @param props.height - メニューの高さ（デフォルトは"menu"）
  * @param props.loop - Menu内を最初の項目または最後の項目を過ぎて移動するときにフォーカスをループさせるかどうかを決定
  */
 export const DropdownMenu = memo(
   ({
     trigger: renderTrigger,
     children,
-    onOpenChange: handleOpenChange,
     role = "menu",
+    height = "medium",
     loop,
+    onOpenChange: handleOpenChange,
   }: Props) => {
     const [isOpen, setIsOpen] = useState(false);
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
@@ -74,7 +78,21 @@ export const DropdownMenu = memo(
         handleOpenChange?.(open, event, reason);
       },
       // trigger要素の下に可能な限りメニューを配置し、できなければ上に配置する
-      middleware: [flip(), shift()],
+      middleware: [
+        flip(),
+        shift(),
+        size({
+          padding: 48,
+          apply: ({ elements, availableHeight }) => {
+            const maxHeight = match(height)
+              .with("medium", () => (availableHeight < 296 ? `${availableHeight}px` : "296px"))
+              .otherwise(() => `${availableHeight}px`);
+            Object.assign(elements.floating.style, {
+              maxHeight: maxHeight,
+            });
+          },
+        }),
+      ],
     });
     const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions([
       // Floating UIを使う時はクリックするためにonClickではなくこちらを使う
@@ -176,7 +194,7 @@ export const DropdownMenu = memo(
                     ref={refs.setFloating}
                     style={floatingStyles}
                     {...getFloatingProps()}
-                    className="z-level2 inline-flex min-w-[112px] max-w-[280px] flex-col rounded-radius-xs bg-surface-container py-padding-8 outline-0"
+                    className="z-level2 flex min-w-[112px] max-w-[280px] flex-col overflow-y-scroll rounded-radius-xs bg-surface-container py-padding-8 outline-0"
                   >
                     {children}
                   </ul>
