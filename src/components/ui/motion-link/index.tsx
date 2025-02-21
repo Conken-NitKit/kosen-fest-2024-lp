@@ -7,4 +7,4 @@ export const MotionLink = (props: Props) => {
   return <MotionLinkPrimitive {...props} />;
 };
 
-const MotionLinkPrimitive = motion(Link);
+const MotionLinkPrimitive = motion.create(Link);
