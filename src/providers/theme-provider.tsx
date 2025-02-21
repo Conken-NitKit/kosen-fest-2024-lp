@@ -1,37 +1,93 @@
 "use client";
 
-import { type PropsWithChildren, createContext, useContext, useEffect, useState } from "react";
+import { type PropsWithChildren, createContext, useCallback, useContext } from "react";
+import { useEffectOnce, useLocalStorage } from "react-use";
+import { match } from "ts-pattern";
 
-export const THEME = {
-  LIGHT: "light",
-  DARK: "dark",
-} as const;
-export type Theme = (typeof THEME)[keyof typeof THEME];
+type Theme = "light" | "dark" | "system" | undefined;
 
-type ThemeContextType = {
+type ContextType = {
   theme: Theme;
   setTheme: (newTheme: Theme) => void;
 };
-const ThemeContext = createContext<ThemeContextType>(undefined as unknown as ThemeContextType);
-export const useThemeContext = () => useContext(ThemeContext);
+const ThemeContext = createContext<ContextType | null>(null);
+export const useThemeContext = () => {
+  const context = useContext(ThemeContext);
+
+  if (!context) {
+    throw new Error("useThemeContext must be used within a <ThemeProvider />");
+  }
+
+  return context;
+};
 
 export const ThemeProvider = ({ children }: PropsWithChildren) => {
-  const [theme, setThemeState] = useState<Theme>(
-    (localStorage.getItem("theme") as Theme | null) || THEME.LIGHT,
+  const [theme, setThemeState] = useLocalStorage<Theme>("theme");
+
+  // 初回のみhtmlタグにclass=themeを追加する。
+  useEffectOnce(() => {
+    // document.documentElement.classList.add(theme);
+    // themeが保存されていないとき
+    if (!theme) {
+      setThemeState("system");
+    }
+
+    match(theme)
+      .with(undefined, "system", () => {
+        // OSの設定がダークモードの場合のみダークモードにする
+        if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+          document.documentElement.classList.add("dark");
+        }
+      })
+      .with("dark", () => {
+        document.documentElement.classList.add("dark");
+      })
+      .otherwise(() => {
+        // ライトモードにする
+        document.documentElement.classList.remove("dark");
+      });
+  });
+
+  // OSの設定が変更されたときに変更
+  useEffectOnce(() => {
+    const mediaQueryListener = (e: MediaQueryListEvent) => {
+      if (theme === "system") {
+        console.log(theme);
+        if (e.matches) {
+          document.documentElement.classList.add("dark");
+        } else {
+          document.documentElement.classList.remove("dark");
+        }
+      }
+    };
+
+    window
+      .matchMedia("(prefers-color-scheme: dark)")
+      .addEventListener("change", mediaQueryListener);
+    return () =>
+      window
+        .matchMedia("(prefers-color-scheme: dark)")
+        .removeEventListener("change", mediaQueryListener);
+  });
+
+  const setTheme = useCallback(
+    (newTheme: Theme) => {
+      setThemeState(newTheme);
+
+      if (newTheme === "dark") {
+        document.documentElement.classList.add("dark");
+      } else if (newTheme === "light") {
+        document.documentElement.classList.remove("dark");
+      } else {
+        // System が選択された場合は OS の設定を見て切り替える
+        document.documentElement.classList.toggle(
+          "dark",
+          window.matchMedia("(prefers-color-scheme: dark)").matches,
+        );
+      }
+    },
+    [setThemeState],
   );
-
-  // 初回のみhtmlタグにclass=themeを追加する。綺麗に書く方法が思いつかなかった
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-  useEffect(() => {
-    document.documentElement.classList.add(theme);
-  }, []);
-
-  const setTheme = (newTheme: Theme) => {
-    setThemeState(newTheme);
-    document.documentElement.classList.remove(theme);
-    document.documentElement.classList.add(newTheme);
-    localStorage.setItem("theme", newTheme);
-  };
 
   return <ThemeContext.Provider value={{ theme, setTheme }}>{children}</ThemeContext.Provider>;
 };
