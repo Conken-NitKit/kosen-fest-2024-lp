@@ -1,8 +1,7 @@
 import { cn } from "@/lib/utils";
 import { cva } from "class-variance-authority";
-import { motion } from "motion/react";
 import type { ComponentProps, ReactNode } from "react";
-import { Link, type LinkProps } from "../core/link";
+import { Slot } from "../core/slot";
 
 type IconProps = {
   className: string;
@@ -12,13 +11,11 @@ type Props = {
   size: "sm" | "md" | "lg";
   shape: "default" | "circle";
   color: "surface" | "primary" | "secondary" | "tertiary";
-  design: "flat" | "clay";
   children: (props: IconProps) => ReactNode;
   className?: string;
 } & (
-  | { link: LinkProps }
-  // { tag: undefined }だと引数が必要になるので注意
-  | ({ link?: undefined } & Omit<ComponentProps<typeof motion.button>, "children">)
+  | { element: () => ReactNode }
+  | ({ element?: undefined } & Omit<ComponentProps<"button">, "children">)
 );
 /**
  * 画面上で最も一般的または重要なアクションにはFABを使用する
@@ -26,16 +23,14 @@ type Props = {
  * @param props.size - ボタンのサイズ ("sm" | "md" | "lg")
  * @param props.shape - ボタンの形状 ("default" | "circle")
  * @param props.color - ボタンの色 ("surface" | "primary" | "secondary" | "tertiary")
- * @param props.design - ボタンのデザイン ("flat" | "clay")
  * @param props.children - ボタンのアイコン
  * @param props.className - ボタンの位置やマージンなどを制御する必要があるときに使う
- * @param props.link - Linkにしたい時に指定。
+ * @param props.element - 別のタグにしたい時に指定。
  */
 export const FloatingActionButton = ({
   size,
   shape,
   color,
-  design,
   className,
   // icon
   children,
@@ -44,28 +39,27 @@ export const FloatingActionButton = ({
   // disabledは状態として不要なため設定しない
 
   // ボタンとして扱う時
-  if (!props.link) {
+  if (!props.element) {
     const type = props.type ? props.type : "button";
     return (
-      <motion.button
+      <button
         type={type}
-        className={cn(buttonVariants({ color, size, shape, design }), className)}
+        className={cn(buttonVariants({ color, size, shape }), className)}
         {...props}
       >
         {children({ className: cn(iconVariants({ size })) })}
-      </motion.button>
+      </button>
     );
   }
 
-  // linkとして扱う時
+  // elementとして扱う時
   return (
-    <Link
-      render={props.link.render}
-      {...props.link.props}
-      className={cn(buttonVariants({ color, size, shape, design }), className)}
+    <Slot
+      element={props.element()}
+      className={cn(buttonVariants({ color, size, shape }), className)}
     >
       {children({ className: cn(iconVariants({ size })) })}
-    </Link>
+    </Slot>
   );
 };
 
@@ -87,10 +81,6 @@ const buttonVariants = cva(
       shape: {
         default: "",
         circle: "rounded-radius-full",
-      },
-      design: {
-        flat: "shadow-flat",
-        clay: "shadow-clay",
       },
     },
   },

@@ -1,6 +1,6 @@
+import { NextMotionLink } from "@/components/ui/next-motion-link";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Pencil } from "lucide-react";
-import NextLink from "next/link";
 import { FloatingActionButton } from ".";
 
 type Story = StoryObj<typeof FloatingActionButton>;
@@ -9,18 +9,7 @@ export const Surface: Story = {};
 
 export const Link: Story = {
   // argsを使って指定するとなぜかエラーになったのでその対策でrender使ってる
-  render: (args) => (
-    <FloatingActionButton
-      {...args}
-      link={{
-        render: ({ children }) => (
-          <NextLink href="/" passHref legacyBehavior>
-            {children}
-          </NextLink>
-        ),
-      }}
-    />
-  ),
+  render: (args) => <FloatingActionButton {...args} element={() => <NextMotionLink href="/" />} />,
 };
 
 export default {
@@ -30,7 +19,6 @@ export default {
     color: "surface",
     size: "md",
     shape: "default",
-    design: "flat",
     type: "button",
     children: ({ className }) => <Pencil className={className} />,
   },
