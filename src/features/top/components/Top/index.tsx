@@ -1,6 +1,5 @@
 "use client";
 
-import { ThemeSwitch } from "@/components/ui/domain/ThemeSwitch";
 import { useEffect, useState } from "react";
 import { Creations } from "../Creations";
 import { LogoAnimation } from "../LogoAnimation";
@@ -20,7 +19,6 @@ export const Top = () => {
     <div>
       <div>コンピュータ研究部</div>
       <div>Pictures</div>
-      <ThemeSwitch />
       <Pictures />
       <Creations />
     </div>
