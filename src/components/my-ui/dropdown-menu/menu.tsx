@@ -47,7 +47,7 @@ type Props = {
  * @param props.trigger - 何らかの`button`
  * @param props.children - `DropdownMenuItem`等
  * @param props.role - 入力候補を表示するとき、リストをフィルタリングするための入力も含まれている場合は`"combobox"`、一般用途であれば`"select"`を使用する必要がある（デフォルトは`"menu"`）
- * @param props.height - メニューの高さ（デフォルトは"menu"）
+ * @param props.height - メニューの高さ（デフォルトは"medium"）
  * @param props.loop - Menu内を最初の項目または最後の項目を過ぎて移動するときにフォーカスをループさせるかどうかを決定
  */
 export const DropdownMenu = memo(
