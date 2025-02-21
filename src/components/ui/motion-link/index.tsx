@@ -1,4 +1,10 @@
-import { motion } from "motion/react";
+import { type MotionProps, motion } from "motion/react";
 import Link from "next/link";
+import type { ComponentProps } from "react";
 
-export const MotionLink = motion.create(Link);
+type Props = Omit<ComponentProps<typeof Link>, keyof MotionProps> & MotionProps;
+export const MotionLink = (props: Props) => {
+  return <MotionLinkPrimitive {...props} />;
+};
+
+const MotionLinkPrimitive = motion(Link);
