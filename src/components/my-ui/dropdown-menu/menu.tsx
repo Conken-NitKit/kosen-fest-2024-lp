@@ -33,11 +33,13 @@ export type DropdownMenuRole = "menu" | "select" | "combobox" | "menucheckbox" |
 type Props = {
   trigger: (props: { selectedLabel: string | null }) => ReactNode;
   children: ReactNode;
+  selectedLabel?: string;
   // roleは指定できるようにする
   role?: DropdownMenuRole;
   height?: "medium" | "large";
   loop?: boolean;
   onOpenChange?: UseFloatingOptions["onOpenChange"];
+  onSelect?: (selectedLabel: string | null) => void;
 };
 /**
  * 「ただのメニューまたは入力候補を表示するため」に使うべき
@@ -46,18 +48,22 @@ type Props = {
  * - `trigger`要素の下に可能な限り少しスペースを開けてメニューを配置し、できなければ上に配置する
  * @param props.trigger - 何らかの`button`
  * @param props.children - `DropdownMenuItem`等
+ * @param props.selectedLabel - 選択されている項目を管理したいときに使う
  * @param props.role - 入力候補を表示するとき、リストをフィルタリングするための入力も含まれている場合は`"combobox"`、一般用途であれば`"select"`を使用する必要がある（デフォルトは`"menu"`）
- * @param props.height - メニューの高さ（デフォルトは"menu"）
+ * @param props.height - メニューの高さ（デフォルトは"medium"）
  * @param props.loop - Menu内を最初の項目または最後の項目を過ぎて移動するときにフォーカスをループさせるかどうかを決定
+ * @param props.onSelect - 選択されたときに呼ばれる
  */
 export const DropdownMenu = memo(
   ({
     trigger: renderTrigger,
     children,
+    selectedLabel,
     role = "menu",
     height = "medium",
     loop,
     onOpenChange: handleOpenChange,
+    onSelect,
   }: Props) => {
     const [isOpen, setIsOpen] = useState(false);
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
@@ -107,7 +113,11 @@ export const DropdownMenu = memo(
       useListNavigation(context, {
         listRef: menuItemRef,
         activeIndex,
-        selectedIndex,
+        selectedIndex: getSelectedIndex({
+          selectedLabel,
+          selectedIndex,
+          labels: menuItemLabelRef.current,
+        }),
         // ホバーやキーボードによるアクティブ変更を検知してセット
         onNavigate: setActiveIndex,
         // 最初の項目または最後の項目を過ぎて移動するときにフォーカスをループさせるかどうかを決定
@@ -117,7 +127,11 @@ export const DropdownMenu = memo(
       useTypeahead(context, {
         listRef: menuItemLabelRef,
         activeIndex,
-        selectedIndex,
+        selectedIndex: getSelectedIndex({
+          selectedLabel,
+          selectedIndex,
+          labels: menuItemLabelRef.current,
+        }),
         // 開いている時だけ更新
         onMatch: isOpen ? setActiveIndex : undefined,
       }),
@@ -126,13 +140,15 @@ export const DropdownMenu = memo(
     // ユーザーが選択した時選択されたものを更新して閉じる
     const handleSelect = useCallback(
       (index: number) => {
+        onSelect?.(menuItemLabelRef.current[index]);
+
         // メニューの用途でない場合のみselect状態を管理する
         if (role === "select" || role === "combobox") {
           setSelectedIndex(index);
         }
         setIsOpen(false);
       },
-      [role],
+      [role, onSelect],
     );
 
     const getItemPropsFactory = useCallback(
@@ -141,12 +157,11 @@ export const DropdownMenu = memo(
           return getItemProps({
             ...props,
             // 選択時の処理
-            // MouseEventにはジェネリクスがなかったのでこう
-            onClick: (e: React.MouseEvent<HTMLLIElement>) => {
+            onClick: (e) => {
               props?.onClick?.(e);
               handleSelect(index);
             },
-            onKeyDown: (e: React.KeyboardEvent<HTMLLIElement>) => {
+            onKeyDown: (e) => {
               props?.onKeyDown?.(e);
               if (e.key === "Enter") {
                 // ここでe.preventDefaultしないとバグる
@@ -181,7 +196,11 @@ export const DropdownMenu = memo(
         <DropdownMenuProvider
           getItemPropsFactory={getItemPropsFactory}
           activeIndex={activeIndex}
-          selectedIndex={selectedIndex}
+          selectedIndex={getSelectedIndex({
+            selectedLabel,
+            selectedIndex,
+            labels: menuItemLabelRef.current,
+          })}
           role={role}
         >
           <FloatingList elementsRef={menuItemRef} labelsRef={menuItemLabelRef}>
@@ -194,7 +213,7 @@ export const DropdownMenu = memo(
                     ref={refs.setFloating}
                     style={floatingStyles}
                     {...getFloatingProps()}
-                    className="z-level2 flex min-w-[112px] max-w-[280px] flex-col overflow-y-scroll rounded-radius-xs bg-surface-container py-padding-8 outline-0"
+                    className="z-level2 flex min-w-[112px] max-w-[280px] flex-col overflow-y-auto rounded-radius-xs bg-surface-container py-padding-8 outline-0"
                   >
                     {children}
                   </ul>
@@ -207,3 +226,18 @@ export const DropdownMenu = memo(
     );
   },
 );
+
+type Args = {
+  selectedLabel?: string;
+  labels: Array<string | null>;
+  selectedIndex: number | null;
+};
+/** selectedLabelがある場合はそれを優先してIndexを計算する */
+const getSelectedIndex = ({ selectedLabel, labels, selectedIndex }: Args) => {
+  if (selectedLabel) {
+    const index = labels.findIndex((v) => v === selectedLabel);
+    return index !== -1 ? index : null;
+  }
+
+  return selectedIndex;
+};
