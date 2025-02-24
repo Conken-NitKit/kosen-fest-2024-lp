@@ -68,13 +68,15 @@
   --radius-radius-xl: 28px;
   --radius-radius-full: calc(infinity * 1px);
 
+  --border-width-border-1: 1px;
+
   --font-roboto: var(--font-roboto);
 
   --shadow-flat: 8px 8px 16px 0 --alpha(var(--shadow) / 25%);
   /* Dark Mode でも影の色は変化しないようにする */
-  --shadow-clay:
+  /* --shadow-clay:
     8px 8px 16px 0 rgba(0, 0, 0, 0.25), inset -8px -8px 16px 0 rgba(0, 0, 0, 0.25),
-    inset 8px 8px 16px 0 hsla(0, 0%, 100%, 0.2);
+    inset 8px 8px 16px 0 hsla(0, 0%, 100%, 0.2); */
 
   /* Hover, Focus に対して追加する */
   /* 色指定だと大変なのでbrightnessで管理 */
