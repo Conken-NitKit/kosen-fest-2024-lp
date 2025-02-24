@@ -8,7 +8,7 @@ type Story = StoryObj<typeof CenterAlignedHeroCarousel>;
 export const Default: Story = {};
 
 export default {
-  title: "my-ui/carousel/carousel",
+  title: "my-ui/carousel/center-aligned-hero-carousel",
   component: CenterAlignedHeroCarousel,
   args: {
     items: Array.from({ length: 10 }).map((_, i) =>
