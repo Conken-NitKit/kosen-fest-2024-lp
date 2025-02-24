@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import type { Meta, StoryObj } from "@storybook/react";
 import Image from "next/image";
 import { Fragment } from "react";
@@ -19,22 +20,26 @@ export default {
         <UncontainedCarouselItem>
           {/* next/imageではintrinsicなレイアウトはこのように表現する。heightはカルーセルの幅に合わせれば良いだけだが、widthは大まかに設定 */}
           {/* fillだとwidthの指定が必須になり、basisによる制御ができないためこちらを使うしかない */}
-          <Image
-            width={500}
-            height={300}
-            src="/placeholder/square.png"
-            alt="mock"
-            className="h-full w-auto"
-          />
+          {({ className }) => (
+            <Image
+              width={500}
+              height={300}
+              src="/placeholder/square.png"
+              alt="mock"
+              className={cn("h-full w-auto", className)}
+            />
+          )}
         </UncontainedCarouselItem>
         <UncontainedCarouselItem>
-          <Image
-            width={500}
-            height={300}
-            src="/placeholder/banner.png"
-            alt="mock"
-            className="h-full w-auto"
-          />
+          {({ className }) => (
+            <Image
+              width={500}
+              height={300}
+              src="/placeholder/banner.png"
+              alt="mock"
+              className={cn("h-full w-auto", className)}
+            />
+          )}
         </UncontainedCarouselItem>
       </Fragment>
     )),

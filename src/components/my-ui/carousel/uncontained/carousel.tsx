@@ -19,9 +19,9 @@ export const UncontainedCarousel = ({ className, children }: PropsWithChildren<P
   return (
     <section>
       {/* カルーセルの表示領域。ここにheight, widthを適用 */}
-      <div ref={emblaRef} className={cn("overflow-hidden", className)}>
+      <div ref={emblaRef} className={cn("overflow-hidden px-padding-16 py-padding-8", className)}>
         {/* コンテナ。ここにrefでtransformが当たることでスクロールして移動する */}
-        <ul className="flex h-full">{children}</ul>
+        <ul className="flex h-full gap-padding-8">{children}</ul>
       </div>
     </section>
   );
