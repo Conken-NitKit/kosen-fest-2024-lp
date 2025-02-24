@@ -13,5 +13,6 @@ const config: StorybookConfig = {
     name: "@storybook/nextjs",
     options: {},
   },
+  staticDirs: ["../src/public"],
 };
 export default config;
