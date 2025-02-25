@@ -18,5 +18,5 @@ export const useRingBufferIndex = (length: number, initialIndex = 0) => {
     setIndex(initialIndex);
   }, [initialIndex]);
 
-  return [getIndex, { setNext, setPrev, reset }] as const;
+  return [getIndex, { setNext, setPrev, reset, setIndex }] as const;
 };

@@ -12,7 +12,7 @@ export default {
   component: CenterAlignedHeroCarousel,
   args: {
     items: Array.from({ length: 10 }).map((_, i) =>
-      i % 2
+      i % 3 === 0 || i % 5 === 0
         ? { src: "/placeholder/square.png", alt: "mock" }
         : { src: "/placeholder/banner.png", alt: "mock" },
     ),
