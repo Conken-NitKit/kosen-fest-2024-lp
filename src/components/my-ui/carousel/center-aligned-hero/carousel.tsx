@@ -71,7 +71,7 @@ const LargeItem = ({ children }: PropsWithChildren) => {
         transition: { type: "spring", delay: 0.1, visualDuration: 0.1, bounce: 0.1 },
       }}
       exit={{ opacity: 0, x: direction === "right" ? 50 : -50 }}
-      className="h-full rounded-radius-xl border-border-1 border-outline bg-surface shadow-flat hover:brightness-hover-focus focus:brightness-hover-focus active:brightness-press"
+      className="h-full rounded-radius-xl border-[1px] border-outline bg-surface shadow-flat hover:brightness-hover-focus focus:brightness-hover-focus active:brightness-press"
     >
       {children}
     </motion.div>
@@ -103,7 +103,7 @@ const SmallItem = ({
       }}
       exit={{ opacity: 0, x: direction === "left" ? -50 : 50 }}
       className={cn(
-        "h-full rounded-radius-xl border-border-1 border-outline bg-surface shadow-flat hover:brightness-hover-focus focus:brightness-hover-focus active:brightness-press",
+        "h-full rounded-radius-xl border-[1px] border-outline bg-surface shadow-flat hover:brightness-hover-focus focus:brightness-hover-focus active:brightness-press",
         className,
       )}
       {...props}

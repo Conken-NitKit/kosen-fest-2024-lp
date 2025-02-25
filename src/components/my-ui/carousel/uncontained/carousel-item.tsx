@@ -24,7 +24,7 @@ export const UncontainedCarouselItem = ({ disabled, className, children, ...prop
     >
       {children({
         className:
-          "rounded-radius-xl border-border-1 border-outline bg-surface shadow-flat hover:brightness-hover-focus focus:brightness-hover-focus active:brightness-press",
+          "rounded-radius-xl border-[1px] border-outline bg-surface shadow-flat hover:brightness-hover-focus focus:brightness-hover-focus active:brightness-press",
       })}
     </li>
   );

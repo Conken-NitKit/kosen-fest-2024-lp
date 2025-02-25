@@ -68,8 +68,6 @@
   --radius-radius-xl: 28px;
   --radius-radius-full: calc(infinity * 1px);
 
-  --border-width-border-1: 1px;
-
   --font-roboto: var(--font-roboto);
 
   --shadow-flat: 0px 4px 6px -1px --alpha(var(--shadow) / 25%);
