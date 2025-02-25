@@ -5,6 +5,12 @@ type Props = {
   disabled?: boolean;
   children: (props: { className: string }) => ReactNode;
 } & Omit<ComponentProps<"li">, "children">;
+/**
+ * UncontainedCarouselと合わせて使うアイテム
+ * @param props.disabled - 無効になっているかどうか
+ * @param props.children - アイテムの内容
+ * @returns
+ */
 export const UncontainedCarouselItem = ({ disabled, className, children, ...props }: Props) => {
   return (
     <li
