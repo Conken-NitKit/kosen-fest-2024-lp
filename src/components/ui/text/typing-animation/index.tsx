@@ -1,27 +1,32 @@
 "use client";
 
+import { Slot } from "@/components/my-ui/core/slot";
 import { cn } from "@/lib/utils";
 import { uuid } from "@/utils/uuid";
 import { motion, stagger, useAnimate, useInView } from "motion/react";
-import { useEffect } from "react";
+import { type HtmlHTMLAttributes, type ReactElement, type ReactNode, useEffect } from "react";
 
 type Props = {
   texts: {
     text: string;
     className?: string;
   }[];
-  className?: string;
   cursor?: { className?: string };
+  element?: ReactNode;
 };
 /**
  * タイピングアニメーションのあるテキスト
  * @param props.texts - テキストの配列。適用したいスタイルごとに文字列を分ける
  * @param props.cursor - カーソル(キャレット)をカスタマイズしたいときに設定
+ * @param props.element - このコンポーネントのタグを変更したいときに設定
  */
-export const TypingAnimationText = ({ texts, className, cursor }: Props) => {
+export const TypingAnimationText = ({ texts, cursor, element }: Props) => {
   // 受け取ったテキストを単語単位の配列にする。単語自体は文字配列として管理する
   const wordsArray = texts.flatMap(({ text, className }) =>
-    text.split(" ").map((word) => ({ text: word.split(""), className })),
+    text
+      .split(" ")
+      // split("")では絵文字は分割されないのでArray.fromを使うべき
+      .map((word) => ({ text: Array.from(word), className })),
   );
 
   // scope: その範囲内に絞るためのref
@@ -73,10 +78,12 @@ export const TypingAnimationText = ({ texts, className, cursor }: Props) => {
     );
   };
   return (
-    <div
+    <Slot
+      element={element ? element : <div />}
       className={cn(
         "text-center font-bold text-base sm:text-xl md:text-3xl lg:text-5xl",
-        className,
+        (element as unknown as ReactElement<HtmlHTMLAttributes<HTMLElement>> | undefined)?.props
+          .className,
       )}
     >
       {renderWords()}
@@ -98,6 +105,6 @@ export const TypingAnimationText = ({ texts, className, cursor }: Props) => {
           cursor?.className,
         )}
       />
-    </div>
+    </Slot>
   );
 };

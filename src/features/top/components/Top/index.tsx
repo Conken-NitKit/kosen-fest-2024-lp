@@ -1,8 +1,8 @@
 "use client";
 
 import { Main } from "@/components/ui/main";
-import { TypingAnimationText } from "@/components/ui/text/typing-animation";
 import { ThemeSelect } from "@/components/ui/theme-select";
+import { Heading } from "../heading";
 import { type Picture, PicturesCarousel } from "../pictures-carousel";
 
 type Props = {
@@ -18,14 +18,7 @@ export const Top = ({ pictures }: Props) => {
         <ThemeSelect />
       </div>
       <Main className="mt-spacer-normal flex flex-col items-center justify-center gap-spacer-normal">
-        <TypingAnimationText
-          texts={[
-            { text: "Welcome", className: "text-tertiary-container" },
-            { text: "to the" },
-            { text: "Conken", className: "text-tertiary-container" },
-            { text: "exhibit!" },
-          ]}
-        />
+        <Heading />
         <PicturesCarousel pictures={pictures} />
       </Main>
     </div>
