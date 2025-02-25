@@ -16,7 +16,7 @@ export default {
         ? { src: "/placeholder/square.png", alt: "mock" }
         : { src: "/placeholder/banner.png", alt: "mock" },
     ),
-    className: "h-[200px] w-[600px]",
+    className: "h-[200px] w-[360px]",
     children: ({ item, className }) => (
       // object-coverではみ出す場合はトリミング。
       // 画像のアスペクト比が異なる場合、一部の画像が拡大されて表示されるため、別のレイアウトにすることを検討するべき

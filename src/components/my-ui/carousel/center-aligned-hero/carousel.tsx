@@ -15,12 +15,13 @@ type Props<T> = {
  */
 export const CenterAlignedHeroCarousel = <T,>({ items, className, children }: Props<T>) => {
   const [getSelectedIndex, controlSelectedIndex] = useRingBufferIndex(items.length);
-  const [direction, setDirection] = useState<-1 | 1>(1);
+  // スライドする方向
+  const [direction, setDirection] = useState<"left" | "right">("left");
 
   return (
     <section
       className={cn(
-        "grid grid-cols-[minmax(40px,56px)_1fr_minmax(40px,56px)] grid-rows-1 gap-padding-8 px-padding-16 py-padding-8",
+        "grid grid-cols-[40px_1fr_40px] grid-rows-1 gap-padding-8 px-padding-16 py-padding-8 sm:grid-cols-[minmax(40px,56px)_1fr_minmax(40px,56px)]",
         className,
       )}
     >
@@ -30,8 +31,9 @@ export const CenterAlignedHeroCarousel = <T,>({ items, className, children }: Pr
           type="button"
           onClick={() => {
             controlSelectedIndex.setPrev();
-            setDirection(-1);
+            setDirection("right");
           }}
+          position="left"
         >
           {children({ item: items[getSelectedIndex(-1)], className: "rounded-radius-xl" })}
         </SmallItem>
@@ -47,8 +49,9 @@ export const CenterAlignedHeroCarousel = <T,>({ items, className, children }: Pr
           type="button"
           onClick={() => {
             controlSelectedIndex.setNext();
-            setDirection(1);
+            setDirection("left");
           }}
+          position="right"
         >
           {children({ item: items[getSelectedIndex(1)], className: "rounded-radius-xl" })}
         </SmallItem>
@@ -58,16 +61,16 @@ export const CenterAlignedHeroCarousel = <T,>({ items, className, children }: Pr
 };
 
 const LargeItem = ({ children }: PropsWithChildren) => {
-  const direction = usePresenceData();
+  const direction: "left" | "right" = usePresenceData();
   return (
     <motion.div
-      initial={{ opacity: 0, x: direction * 50 }}
+      initial={{ opacity: 0, x: direction === "left" ? -50 : 50 }}
       animate={{
         opacity: 1,
         x: 0,
-        transition: { type: "spring", delay: 0.1, visualDuration: 0.1, bounce: 0.4 },
+        transition: { type: "spring", delay: 0.1, visualDuration: 0.1, bounce: 0.1 },
       }}
-      exit={{ opacity: 0, x: direction * -50 }}
+      exit={{ opacity: 0, x: direction === "right" ? 50 : -50 }}
       className="h-full rounded-radius-xl border-border-1 border-outline bg-surface shadow-flat hover:brightness-hover-focus focus:brightness-hover-focus active:brightness-press"
     >
       {children}
@@ -75,17 +78,30 @@ const LargeItem = ({ children }: PropsWithChildren) => {
   );
 };
 
-const SmallItem = ({ className, children, ...props }: HTMLMotionProps<"button">) => {
-  const direction = usePresenceData();
+const SmallItem = ({
+  position,
+  className,
+  children,
+  ...props
+}: {
+  // どの位置にあるボタンか
+  position: "left" | "right";
+} & HTMLMotionProps<"button">) => {
+  const direction: "left" | "right" = usePresenceData();
   return (
     <motion.button
-      initial={{ opacity: 0, x: direction * 50 }}
+      initial={{ opacity: 0, x: direction === "left" ? 50 : -50 }}
       animate={{
         opacity: 1,
         x: 0,
-        transition: { type: "spring", delay: 0.1, visualDuration: 0.1, bounce: 0.4 },
+        transition: {
+          type: "spring",
+          delay: position === direction ? 0.1 : 0.2,
+          visualDuration: position === direction ? 0.1 : 0.2,
+          bounce: 0.1,
+        },
       }}
-      exit={{ opacity: 0, x: direction * -50 }}
+      exit={{ opacity: 0, x: direction === "left" ? -50 : 50 }}
       className={cn(
         "h-full rounded-radius-xl border-border-1 border-outline bg-surface shadow-flat hover:brightness-hover-focus focus:brightness-hover-focus active:brightness-press",
         className,
