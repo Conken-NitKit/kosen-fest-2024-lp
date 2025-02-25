@@ -17,7 +17,6 @@ export const UncontainedCarouselItem = ({ disabled, className, children, ...prop
       {...props}
       className={cn(
         // min-w-0 shrink-0 grow-0を組み合わせて要素のサイズを固定し、勝手に広がったり縮んだりしないようにする
-        // 影が不自然だったのでなくしている
         "min-w-0 shrink-0 grow-0 rounded-radius-xl border-border-1 border-outline bg-surface shadow-flat hover:brightness-hover-focus focus:brightness-hover-focus active:brightness-press",
         className,
       )}
