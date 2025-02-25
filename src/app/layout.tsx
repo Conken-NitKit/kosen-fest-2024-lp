@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { Body } from "@/components/ui/body";
 import { ThemeProvider } from "@/providers/theme-provider";
 import { fontVariables } from "./font";
 
@@ -15,9 +16,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja" className={fontVariables} suppressHydrationWarning>
-      <body>
+      <Body>
         <ThemeProvider>{children}</ThemeProvider>
-      </body>
+      </Body>
     </html>
   );
 }

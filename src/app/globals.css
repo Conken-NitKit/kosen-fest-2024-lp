@@ -209,9 +209,3 @@
   --surface-container-high: rgb(39 43 33);
   --surface-container-highest: rgb(50 54 43);
 }
-
-@layer base {
-  body {
-    @apply bg-surface-container-lowest text-on-surface transition duration-500 ease-in-out;
-  }
-}

@@ -9,8 +9,22 @@ export const DefaultDecorator: Decorator = (Story) => {
     const fontVariableArray = fontVariables.split(" ");
 
     document.documentElement.classList.add(...fontVariableArray, "list-none");
+    document.body.classList.add(
+      "bg-surface",
+      "text-on-surface",
+      "transition",
+      "duration-500",
+      "ease-in-out",
+    );
     return () => {
       document.documentElement.classList.remove(...fontVariableArray, "list-none");
+      document.body.classList.remove(
+        "bg-surface",
+        "text-on-surface",
+        "transition",
+        "duration-500",
+        "ease-in-out",
+      );
     };
   }, []);
 

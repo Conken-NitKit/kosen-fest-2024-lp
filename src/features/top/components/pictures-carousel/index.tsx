@@ -17,7 +17,7 @@ type Props = {
 };
 export const PicturesCarousel = ({ pictures }: Props) => {
   return (
-    <UncontainedCarousel className="h-[300px] w-[320px]">
+    <UncontainedCarousel className="h-[400px] w-full xl:w-[1280px]">
       {pictures.map(({ src, alt, id }) => (
         <UncontainedCarouselItem key={id}>
           {({ className }) => (
