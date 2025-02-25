@@ -8,9 +8,9 @@ export const DefaultDecorator: Decorator = (Story) => {
   useEffect(() => {
     const fontVariableArray = fontVariables.split(" ");
 
-    document.documentElement.classList.add(...fontVariableArray);
+    document.documentElement.classList.add(...fontVariableArray, "list-none");
     return () => {
-      document.documentElement.classList.remove(...fontVariableArray);
+      document.documentElement.classList.remove(...fontVariableArray, "list-none");
     };
   }, []);
 

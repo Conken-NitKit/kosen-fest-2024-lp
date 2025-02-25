@@ -39,8 +39,7 @@ export const DropdownMenuItem = ({
   // リンク等の用途の場合
   if (element) {
     return (
-      // story上でないはずのリストマークがなぜかでたので消す
-      <li className="list-none" role="presentation" {...props}>
+      <li role="presentation" {...props}>
         <Slot
           element={element}
           className={cn(listVariants({ selected, disabled }))}
