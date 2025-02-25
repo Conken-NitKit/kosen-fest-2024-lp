@@ -17,11 +17,15 @@ export const UncontainedCarouselItem = ({ disabled, className, children, ...prop
       {...props}
       className={cn(
         // min-w-0 shrink-0 grow-0を組み合わせて要素のサイズを固定し、勝手に広がったり縮んだりしないようにする
-        "min-w-0 shrink-0 grow-0 rounded-radius-xl border-border-1 border-outline bg-surface shadow-flat hover:brightness-hover-focus focus:brightness-hover-focus active:brightness-press",
+        // gapで指定するとうまくいかないためこちらにplを指定
+        "min-w-0 shrink-0 grow-0 pl-padding-8",
         className,
       )}
     >
-      {children({ className: "rounded-radius-xl" })}
+      {children({
+        className:
+          "rounded-radius-xl border-border-1 border-outline bg-surface shadow-flat hover:brightness-hover-focus focus:brightness-hover-focus active:brightness-press",
+      })}
     </li>
   );
 };
