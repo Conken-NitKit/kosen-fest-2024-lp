@@ -6,9 +6,9 @@ export const Heading = () => {
       // biome-ignore lint/a11y/useHeadingContent: <explanation>
       element={<h1 />}
       texts={[
-        { text: "Welcome", className: "text-tertiary-container" },
+        { text: "Welcome", className: "text-on-tertiary-container" },
         { text: "to the" },
-        { text: "Conken", className: "text-tertiary-container" },
+        { text: "Conken", className: "text-on-tertiary-container" },
         { text: "exhibit!🚀" },
       ]}
     />

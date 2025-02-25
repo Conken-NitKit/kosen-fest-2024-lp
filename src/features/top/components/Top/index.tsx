@@ -1,5 +1,6 @@
 "use client";
 
+import { Container } from "@/components/ui/container";
 import { Main } from "@/components/ui/main";
 import { ThemeSelect } from "@/components/ui/theme-select";
 import { Heading } from "../heading";
@@ -10,7 +11,7 @@ type Props = {
 };
 export const Top = ({ pictures }: Props) => {
   return (
-    <div>
+    <Container>
       {/* TODO: 実装できたら追加 */}
       <div className="flex">
         <div>Top App Bar</div>
@@ -21,6 +22,6 @@ export const Top = ({ pictures }: Props) => {
         <Heading />
         <PicturesCarousel pictures={pictures} />
       </Main>
-    </div>
+    </Container>
   );
 };
