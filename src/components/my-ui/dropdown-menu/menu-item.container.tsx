@@ -1,5 +1,5 @@
 import { useListItem } from "@floating-ui/react";
-import type { ComponentProps, HTMLAttributes, ReactElement, ReactNode, Ref } from "react";
+import type { ComponentProps, HTMLAttributes, ReactElement, ReactNode } from "react";
 import { match } from "ts-pattern";
 import { Slot } from "../core/slot";
 import { DropdownMenuItem as Presenter } from "./menu-item";
@@ -8,9 +8,9 @@ import { useDropdownMenuContext } from "./provider";
 export type DropdownMenuItemRole = "menuitem" | "menuitemcheckbox" | "menuitemradio" | "option";
 
 type Props = {
-  leadingIcon?: (props: { className: string }) => ReactNode;
+  leadingIcon?: (props: { className: string; selected: boolean }) => ReactNode;
   label: string;
-  trailingIcon?: (props: { className: string }) => ReactNode;
+  trailingIcon?: (props: { className: string; selected: boolean }) => ReactNode;
   disabled?: boolean;
   element?: ReactNode;
 } & Omit<ComponentProps<"li">, "children" | "role" | "className" | "tabIndex">;

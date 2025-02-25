@@ -6,11 +6,11 @@ import { Slot } from "../core/slot";
 import type { DropdownMenuItemRole } from "./menu-item.container";
 
 type Props = {
-  leadingIcon?: (props: { className: string }) => ReactNode;
+  leadingIcon?: (props: { className: string; selected: boolean }) => ReactNode;
   label: string;
-  trailingIcon?: (props: { className: string }) => ReactNode;
+  trailingIcon?: (props: { className: string; selected: boolean }) => ReactNode;
   role: DropdownMenuItemRole;
-  selected?: boolean;
+  selected: boolean;
   disabled?: boolean;
   element?: ReactNode;
 } & Omit<ComponentProps<"li">, "children" | "role" | "className">;
@@ -28,10 +28,10 @@ export const DropdownMenuItem = ({
   const Content = () => {
     return (
       <>
-        {leadingIcon?.({ className: "size-[24px] text-on-surface-variant" })}
+        {leadingIcon?.({ className: "size-[24px] text-on-surface-variant", selected })}
         <span className={cn(font.labelLarge, "text-on-surface")}>{label}</span>
         {/* 最後のみ右寄せ */}
-        {trailingIcon?.({ className: "size-[24px] ml-auto text-on-surface-variant" })}
+        {trailingIcon?.({ className: "size-[24px] ml-auto text-on-surface-variant", selected })}
       </>
     );
   };
