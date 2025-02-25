@@ -3,7 +3,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import type { PropsWithChildren } from "react";
 
 type Props = {
-  className?: string;
+  className: string;
 };
 /**
  * 画像の幅に合わせてカルーセルを表示するコンポーネント

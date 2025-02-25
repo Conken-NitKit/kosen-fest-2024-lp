@@ -6,6 +6,6 @@ type Story = StoryObj<typeof IconButton>;
 export const Default: Story = {};
 
 export default {
-  title: "my-ui",
+  title: "my-ui/icon-button",
   component: IconButton,
 } satisfies Meta<typeof IconButton>;

@@ -64,7 +64,7 @@ export const FloatingActionButton = ({
 };
 
 const buttonVariants = cva(
-  "flex items-center justify-center outline-outline transition cursor-pointer z-level1 active:brightness-press hover:brightness-hover-focus focus:brightness-hover-focus",
+  "flex items-center justify-center outline-outline transition cursor-pointer z-level1 shadow-flat active:brightness-press hover:brightness-hover-focus focus:brightness-hover-focus",
   {
     variants: {
       color: {
