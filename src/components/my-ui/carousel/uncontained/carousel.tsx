@@ -17,7 +17,7 @@ export const UncontainedCarousel = ({ className, children }: PropsWithChildren<P
   });
 
   return (
-    <section className="mx-padding-16 my-padding-8">
+    <section>
       {/* カルーセルの表示領域。ここにheight, widthを適用 */}
       <div ref={emblaRef} className={cn("overflow-hidden", className)}>
         {/* コンテナ。ここにrefでtransformが当たることでスクロールして移動する */}
