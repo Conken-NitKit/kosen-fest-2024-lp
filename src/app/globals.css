@@ -68,7 +68,7 @@
   --radius-radius-xl: 28px;
   --radius-radius-full: calc(infinity * 1px);
 
-  --font-roboto: var(--font-roboto);
+  --font-noto-sans-jp: var(--font-noto-sans-jp);
 
   --shadow-flat: 0px 4px 6px -1px --alpha(var(--shadow) / 25%);
   /* Dark Mode でも影の色は変化しないようにする */

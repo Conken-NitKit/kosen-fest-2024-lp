@@ -1,6 +1,7 @@
 "use client";
 
 import { Slot } from "@/components/my-ui/core/slot";
+import { font } from "@/config/font";
 import { cn } from "@/lib/utils";
 import { uuid } from "@/utils/uuid";
 import { motion, stagger, useAnimate, useInView } from "motion/react";
@@ -56,15 +57,15 @@ export const TypingAnimationText = ({ texts, cursor, element }: Props) => {
   const renderWords = () => {
     return (
       <motion.div ref={scope} className="inline">
-        {wordsArray.map((word, idx) => {
+        {wordsArray.map((word) => {
           return (
             <div key={uuid()} className="inline-block">
-              {word.text.map((char, index) => (
+              {word.text.map((char) => (
                 // ここは最初は非表示だが、表示されるときにinline-block opacity-100 w-fitが付与される
                 <motion.span
                   initial={{}}
                   key={uuid()}
-                  className={cn("hidden text-black opacity-0 dark:text-white", word.className)}
+                  className={cn("hidden text-on-surface opacity-0", word.className)}
                 >
                   {char}
                 </motion.span>
@@ -81,7 +82,8 @@ export const TypingAnimationText = ({ texts, cursor, element }: Props) => {
     <Slot
       element={element ? element : <div />}
       className={cn(
-        "text-center font-bold text-base sm:text-xl md:text-3xl lg:text-5xl",
+        font.display,
+        "font-bold",
         (element as unknown as ReactElement<HtmlHTMLAttributes<HTMLElement>> | undefined)?.props
           .className,
       )}
@@ -101,7 +103,7 @@ export const TypingAnimationText = ({ texts, cursor, element }: Props) => {
           repeatType: "reverse",
         }}
         className={cn(
-          "inline-block h-4 w-[4px] rounded-sm bg-blue-500 md:h-6 lg:h-10",
+          "inline-block h-[16px] w-[4px] rounded-radius-xs bg-on-surface md:h-[24px] lg:h-[40px]",
           cursor?.className,
         )}
       />

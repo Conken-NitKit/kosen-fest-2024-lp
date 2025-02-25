@@ -1,8 +1,8 @@
-import { Roboto } from "next/font/google";
+import { Noto_Sans_JP } from "next/font/google";
 
-const roboto = Roboto({
-  weight: ["400", "500"],
-  variable: "--font-roboto",
+const roboto = Noto_Sans_JP({
+  weight: ["400", "500", "700"],
+  variable: "--font-noto-sans-jp",
   subsets: ["latin"],
 });
 
