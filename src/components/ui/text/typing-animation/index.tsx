@@ -3,7 +3,6 @@
 import { Slot } from "@/components/my-ui/core/slot";
 import { font } from "@/config/font";
 import { cn } from "@/lib/utils";
-import { uuid } from "@/utils/uuid";
 import { motion, stagger, useAnimate, useInView } from "motion/react";
 import { type HtmlHTMLAttributes, type ReactElement, type ReactNode, useEffect } from "react";
 
@@ -33,7 +32,7 @@ export const TypingAnimationText = ({ texts, cursor, element }: Props) => {
   // scope: その範囲内に絞るためのref
   const [scope, animate] = useAnimate();
   // その要素が画面内に入ったかどうか判定
-  const isInView = useInView(scope);
+  const isInView = useInView(scope, { once: true });
   useEffect(() => {
     if (isInView) {
       // scope範囲内にあるspanに文字ごとのアニメーションを適用
@@ -57,14 +56,17 @@ export const TypingAnimationText = ({ texts, cursor, element }: Props) => {
   const renderWords = () => {
     return (
       <motion.div ref={scope} className="inline">
-        {wordsArray.map((word) => {
+        {wordsArray.map((word, idx) => {
           return (
-            <div key={uuid()} className="inline-block">
-              {word.text.map((char) => (
+            // ここはindexでkey指定をする
+            // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+            <div key={`word-${idx}`} className="inline-block">
+              {word.text.map((char, index) => (
                 // ここは最初は非表示だが、表示されるときにinline-block opacity-100 w-fitが付与される
                 <motion.span
+                  // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                  key={`char-${index}`}
                   initial={{}}
-                  key={uuid()}
                   className={cn("hidden text-on-surface opacity-0", word.className)}
                 >
                   {char}
