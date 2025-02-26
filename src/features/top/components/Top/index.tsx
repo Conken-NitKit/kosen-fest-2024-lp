@@ -1,5 +1,3 @@
-"use client";
-
 import { Container } from "@/components/ui/container";
 import { Main } from "@/components/ui/main";
 import { ThemeSelect } from "@/components/ui/theme-select";
