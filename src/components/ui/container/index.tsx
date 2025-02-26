@@ -10,12 +10,12 @@ export const Container = ({ className, children, ...props }: ComponentProps<"div
     // 二つの背景を重ねている
     <div
       className={cn(
-        "bg-radial-[circle_at_right_top] from-primary-container via-secondary-container to-tertiary-container text-on-surface transition duration-500 ease-in-out",
+        "bg-surface-container-lowest text-on-surface transition duration-500 ease-in-out",
         className,
       )}
       {...props}
     >
-      <GridBackground color={useCssVariable("--on-surface") ?? ""} fade={false}>
+      <GridBackground color={useCssVariable("--on-surface") ?? ""} fade={false} cellSize="8px">
         {children}
       </GridBackground>
     </div>
