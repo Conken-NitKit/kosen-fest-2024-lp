@@ -1,4 +1,13 @@
-import { type HTMLAttributes, type ReactNode, type Ref, cloneElement, isValidElement } from "react";
+"use client";
+
+import {
+  type HTMLAttributes,
+  type ReactElement,
+  type ReactNode,
+  type Ref,
+  cloneElement,
+  isValidElement,
+} from "react";
 
 type Props<T, U> = { element: ReactNode; ref?: Ref<U>; children?: ReactNode } & T;
 
@@ -19,7 +28,7 @@ export const Slot = <T extends HTMLAttributes<HTMLElement>, U extends HTMLElemen
   return cloneElement(
     getElementOrThrow<Omit<Props<T, U>, "element" | "children">>(element),
     props,
-    children,
+    children ?? (element as unknown as ReactElement<T>).props.children,
   );
 };
 

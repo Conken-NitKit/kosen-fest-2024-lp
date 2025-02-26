@@ -1,6 +1,6 @@
 "use client";
 
-import { UnexpectedError } from "../UnexpectedError";
+import { UnexpectedError } from "../unexpected-error";
 
 type Props = {
   error: Error;
