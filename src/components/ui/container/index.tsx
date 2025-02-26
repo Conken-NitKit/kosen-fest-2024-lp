@@ -13,7 +13,7 @@ export const Container = ({ className, children, ...props }: ComponentProps<"div
       )}
       {...props}
     >
-      <GridBackground color={useCssVariable("--on-surface")} fade={false}>
+      <GridBackground color={useCssVariable("--on-surface") ?? ""} fade={false}>
         {children}
       </GridBackground>
     </div>

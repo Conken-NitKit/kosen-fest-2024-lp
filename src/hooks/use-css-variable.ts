@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { useIsClient } from "./use-is-client";
 
 /**
  * 指定された CSS 変数の値を取得し、リアクティブに更新するカスタムフック。テーマで変化する色を取得するときにのみ使用するべき
@@ -9,23 +10,26 @@ import { useCallback, useEffect, useState } from "react";
 export const useCssVariable = <T>(
   variableName: string,
   fn: (value: string) => T = (v) => v as T,
-): T => {
+): T | null => {
+  const isClient = useIsClient();
   const transformFn = useCallback(fn, []);
-  const [value, setValue] = useState<T>(() => transformFn(getCssVariable(variableName)));
+  const [value, setValue] = useState<T | null>(null);
 
   useEffect(() => {
-    const observer = new MutationObserver(() => {
-      setValue(transformFn(getCssVariable(variableName)));
-    });
+    if (isClient) {
+      const observer = new MutationObserver(() => {
+        setValue(transformFn(getCssVariable(variableName)));
+      });
 
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["style"],
-      subtree: true,
-    });
+      observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ["style"],
+        subtree: true,
+      });
 
-    return () => observer.disconnect();
-  }, [variableName, transformFn]);
+      return () => observer.disconnect();
+    }
+  }, [variableName, transformFn, isClient]);
 
   return value;
 };
