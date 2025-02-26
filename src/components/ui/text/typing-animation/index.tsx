@@ -1,3 +1,5 @@
+"use client";
+
 import { Slot } from "@/components/my-ui/core/slot";
 import { font } from "@/config/font";
 import { cn } from "@/lib/utils";

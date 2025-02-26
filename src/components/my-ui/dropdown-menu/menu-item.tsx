@@ -1,3 +1,5 @@
+"use client";
+
 import { font } from "@/config/font";
 import { cn } from "@/lib/utils";
 import { cva } from "class-variance-authority";
@@ -29,7 +31,7 @@ export const DropdownMenuItem = ({
     return (
       <>
         {leadingIcon?.({ className: "size-[24px] text-on-surface-variant", selected })}
-        <span className={cn(font.labelLarge, "text-on-surface")}>{label}</span>
+        <span className={cn(font.label, "text-on-surface")}>{label}</span>
         {/* 最後のみ右寄せ */}
         {trailingIcon?.({ className: "size-[24px] ml-auto text-on-surface-variant", selected })}
       </>

@@ -1,3 +1,5 @@
+"use client";
+
 import type { UseInteractionsReturn } from "@floating-ui/react";
 import { type PropsWithChildren, createContext, useContext } from "react";
 import type { DropdownMenuRole } from "./menu";

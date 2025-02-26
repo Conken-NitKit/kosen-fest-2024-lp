@@ -1,3 +1,5 @@
+"use client";
+
 import { useListItem } from "@floating-ui/react";
 import type { ComponentProps, HTMLAttributes, ReactElement, ReactNode } from "react";
 import { match } from "ts-pattern";

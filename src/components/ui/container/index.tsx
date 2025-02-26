@@ -1,3 +1,5 @@
+"use client";
+
 import { useCssVariable } from "@/hooks/use-css-variable";
 import { cn } from "@/lib/utils";
 import type { ComponentProps } from "react";

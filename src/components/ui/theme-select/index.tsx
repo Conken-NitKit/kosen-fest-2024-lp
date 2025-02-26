@@ -1,3 +1,5 @@
+"use client";
+
 import { DropdownMenu, DropdownMenuItem } from "@/components/my-ui/dropdown-menu";
 import { FloatingActionButton } from "@/components/my-ui/floating-action-button";
 import { Check, MonitorCog, Moon, Sun, SunMoon } from "lucide-react";
