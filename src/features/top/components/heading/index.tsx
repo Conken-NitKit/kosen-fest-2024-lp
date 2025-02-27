@@ -13,8 +13,7 @@ export const Heading = () => {
         className="absolute h-full w-full"
       />
       <TypingAnimationText
-        // biome-ignore lint/a11y/useHeadingContent: <explanation>
-        element={<h1 />}
+        tag="h1"
         texts={[
           { text: "Welcome", className: "text-on-tertiary-container" },
           { text: "to the" },
