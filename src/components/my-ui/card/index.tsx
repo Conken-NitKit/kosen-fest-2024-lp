@@ -21,9 +21,6 @@ type Props = {
   // 入れ子のaタグも面倒なので避ける
   | { mode: "link"; element: ReactNode }
 );
-// | ({ mode: "button" } & ComponentProps<typeof motion.button>)
-// | ({ mode?: "default" | "draggable" } & ComponentProps<typeof motion.div>)
-// | { mode: "link"; tag: ReactNode }
 
 export const Card = ({
   color,
