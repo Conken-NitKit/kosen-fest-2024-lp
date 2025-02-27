@@ -6,11 +6,12 @@ import { useCssVariable } from "@/hooks/use-css-variable";
 
 export const Heading = () => {
   return (
-    <div className="flex h-screen w-screen items-center justify-center">
+    <div className="flex h-screen w-full items-center justify-center">
+      {/* childrenとして渡すとマスクがかかって文字が見えなくなるのでこうするしかない */}
       <GridBackground
         color={useCssVariable("--on-surface") ?? ""}
         cellSize="8px"
-        className="absolute h-full w-full"
+        className="absolute h-screen w-screen"
       />
       <TypingAnimationText
         tag="h1"
@@ -21,7 +22,7 @@ export const Heading = () => {
           { text: "exhibit!🚀" },
         ]}
         // テキストを中央寄せにするにはtext-alignを忘れずに設定する
-        className="px-spacer-small text-center sm:px-spacer-normal"
+        className="text-center"
       />
     </div>
   );

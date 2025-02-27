@@ -2,25 +2,21 @@
 
 import { font } from "@/config/font";
 import { cn } from "@/lib/utils";
-import { motion, useInView } from "motion/react";
-import { useRef } from "react";
+import { motion } from "motion/react";
 import { type Artwork, ArtworksCarousel } from "./carousel";
 
 type Props = {
   artworks: Artwork[];
 };
 export const Artworks = ({ artworks }: Props) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { amount: 0.7 });
-
   return (
-    // 画面にこの要素の七割が入ったらアニメーションする
+    // 画面の上から25%下の位置に要素が写ったらアニメーション
     <motion.div
-      className="flex h-[125vh] w-screen flex-col items-center justify-center gap-spacer-normal bg-on-surface"
-      ref={ref}
+      className="flex h-full min-h-[125vh] w-screen flex-col items-center justify-center gap-spacer-normal bg-on-surface pt-spacer-normal"
       initial={{ opacity: 0 }}
-      animate={isInView ? { opacity: 1 } : {}}
+      whileInView={{ opacity: 1 }}
       transition={{ duration: 1 }}
+      viewport={{ margin: "-25% 0px -75% 0px" }}
     >
       <h2
         className={cn(
