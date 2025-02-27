@@ -6,12 +6,12 @@ import { useCssVariable } from "@/hooks/use-css-variable";
 
 export const Heading = () => {
   return (
-    <GridBackground
-      tag={<div className="flex h-screen w-screen items-center justify-center" />}
-      color={useCssVariable("--on-surface") ?? ""}
-      fade={false}
-      cellSize="8px"
-    >
+    <div className="flex h-screen w-screen items-center justify-center">
+      <GridBackground
+        tag={<div className="absolute h-full w-full" />}
+        color={useCssVariable("--on-surface") ?? ""}
+        cellSize="8px"
+      />
       <TypingAnimationText
         // biome-ignore lint/a11y/useHeadingContent: <explanation>
         element={<h1 />}
@@ -22,6 +22,6 @@ export const Heading = () => {
           { text: "exhibit!🚀" },
         ]}
       />
-    </GridBackground>
+    </div>
   );
 };

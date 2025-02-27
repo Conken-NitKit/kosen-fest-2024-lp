@@ -1,7 +1,7 @@
-import type { Picture } from "@/features/top/components/pictures-carousel";
+import type { Artwork } from "@/features/top/components/artworks";
 
 // TODO: Replace with real data
-export const pictures: Picture[] = [
+export const artworks: Artwork[] = [
   { src: "/placeholder/square.png", alt: "mock", id: "1" },
   { src: "/placeholder/square.png", alt: "mock", id: "2" },
   { src: "/placeholder/banner.png", alt: "mock", id: "3" },
