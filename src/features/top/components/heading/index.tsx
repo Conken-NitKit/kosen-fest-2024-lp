@@ -20,6 +20,8 @@ export const Heading = () => {
           { text: "Conken", className: "text-on-tertiary-container" },
           { text: "exhibit!🚀" },
         ]}
+        // テキストを中央寄せにするにはtext-alignを忘れずに設定する
+        className="px-spacer-small text-center sm:px-spacer-normal"
       />
     </div>
   );
