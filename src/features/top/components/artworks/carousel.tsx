@@ -6,26 +6,22 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 
-export type Picture = {
+export type Artwork = {
   src: string;
   alt: string;
   id: string;
 };
 
 type Props = {
-  pictures: Picture[];
+  artworks: Artwork[];
 };
-export const PicturesCarousel = ({ pictures }: Props) => {
+export const ArtworksCarousel = ({ artworks }: Props) => {
   return (
-    <UncontainedCarousel
-      className="h-[400px] w-full xl:w-[1280px]"
-      loop
-      autoScrollOptions={{ playOnInit: true }}
-    >
-      {pictures.map(({ src, alt, id }) => (
+    <UncontainedCarousel className="h-[400px] w-full" loop autoScrollOptions={{ playOnInit: true }}>
+      {artworks.map(({ src, alt, id }) => (
         <UncontainedCarouselItem key={id}>
           {({ className }) => (
-            <Link href={`/pictures/${id}`}>
+            <Link href={`/artworks/${id}`}>
               <Image
                 src={src}
                 alt={alt}
