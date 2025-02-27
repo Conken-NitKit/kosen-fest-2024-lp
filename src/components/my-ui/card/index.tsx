@@ -1,49 +1,75 @@
 import { cn } from "@/lib/utils";
 import { omit } from "@/utils/object";
 import { cva } from "class-variance-authority";
-import { motion } from "motion/react";
 import type { ComponentProps, PropsWithChildren, ReactNode } from "react";
 import { Slot } from "../core/slot";
 
 type Props = {
   color: "elevated" | "filled" | "outlined";
-  design: "flat" | "clay";
   className?: string;
   disabled?: boolean;
 } & (
-  | ({ mode: "button" } & ComponentProps<typeof motion.button>)
+  | ({ mode: "button"; element?: ReactNode } & Omit<
+      ComponentProps<"button">,
+      "color" | "className" | "disabled" | "children"
+    >)
   // TODO: draggableは面倒なので必要になったら実装する。
-  | ({ mode?: "default" | "draggable" } & ComponentProps<typeof motion.div>)
+  | ({ mode?: "default" | "draggable"; element?: ReactNode } & Omit<
+      ComponentProps<"div">,
+      "color" | "className" | "children"
+    >)
   // 入れ子のaタグも面倒なので避ける
-  | { mode: "link"; tag: ReactNode }
+  | { mode: "link"; element: ReactNode }
 );
+
 export const Card = ({
   color,
-  design,
-  className,
+  className: customClassName,
   // menu-items
-  children,
   disabled,
+  children,
   ...props
 }: PropsWithChildren<Props>) => {
-  const getTag = () => {
-    // 型ガードの仕様で分割代入して mode === "button" としてpropsを絞り込むことはできないのでこうする
-    if (props.mode === "button") {
-      const type = props.type ? props.type : "button";
-      return <motion.button type={type} {...omit(props, ["mode", "type"])} disabled={disabled} />;
-    }
-    if (props.mode === "link") {
-      if (disabled) {
-        return <div aria-disabled />;
-      }
-      return props.tag;
-    }
-    return <motion.div {...omit(props, ["mode"])} aria-disabled={disabled} />;
-  };
+  const className = cn(cardVariants({ color, mode: props.mode }), customClassName);
 
-  // elementをJSX形式で渡すと上手く動かない
+  // 型ガードの仕様で分割代入して mode === "button" としてpropsを絞り込むことはできないのでこうする
+  if (props.mode === "button") {
+    return (
+      <Slot<ComponentProps<"button">>
+        // biome-ignore lint/a11y/useButtonType: <explanation>
+        element={<button />}
+        type="button"
+        {...omit(props, ["mode"])}
+        disabled={disabled}
+        className={className}
+      >
+        {children}
+      </Slot>
+    );
+  }
+
+  if (props.mode === "link") {
+    if (disabled) {
+      return (
+        <div aria-disabled className={className}>
+          {children}
+        </div>
+      );
+    }
+    return (
+      <Slot element={props.element} className={className}>
+        {children}
+      </Slot>
+    );
+  }
+
   return (
-    <Slot element={getTag()} className={cn(cardVariants({ color, design, mode: props.mode }))}>
+    <Slot
+      element={<div />}
+      {...omit(props, ["mode"])}
+      aria-disabled={disabled}
+      className={className}
+    >
       {children}
     </Slot>
   );
@@ -56,10 +82,6 @@ const cardVariants = cva("", {
       elevated: "",
       filled: "",
       outlined: "",
-    },
-    design: {
-      flat: "",
-      clay: "",
     },
     mode: {
       default: "",
