@@ -16,7 +16,7 @@ export const Artworks = ({ artworks }: Props) => {
   return (
     // 画面にこの要素の七割が入ったらアニメーションする
     <motion.div
-      className="flex h-[125vh] w-screen flex-col items-center justify-center gap-spacer-normal bg-on-surface"
+      className="flex h-full min-h-[125vh] w-screen flex-col items-center justify-center gap-spacer-normal bg-on-surface pt-spacer-normal"
       ref={ref}
       initial={{ opacity: 0 }}
       animate={isInView ? { opacity: 1 } : {}}

@@ -16,7 +16,7 @@ export const Top = ({ artworks }: Props) => {
         <div>コンピュータ研究部</div>
         <ThemeSelect />
       </div>
-      <Main className="mt-spacer-normal flex flex-col items-center justify-center gap-spacer-normal">
+      <Main>
         <Heading />
         <Artworks artworks={artworks} />
       </Main>
