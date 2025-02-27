@@ -21,7 +21,7 @@ export const DisabledButton: Story = {
 export const Link: Story = {
   render: ({ children, ...args }) => {
     return (
-      <Card {...args} mode="link" tag={<NextLink href="/" />}>
+      <Card {...args} mode="link" element={<NextLink href="/" />}>
         {children}
       </Card>
     );
@@ -31,7 +31,7 @@ export const Link: Story = {
 export const DisabledLink: Story = {
   render: ({ children, ...args }) => {
     return (
-      <Card {...args} mode="link" tag={<NextLink href="/" />} disabled>
+      <Card {...args} mode="link" element={<NextLink href="/" />} disabled>
         {children}
       </Card>
     );
@@ -43,7 +43,6 @@ export default {
   component: Card,
   args: {
     color: "elevated",
-    design: "flat",
     children: "Card Content",
   },
 } satisfies Meta<typeof Card>;
