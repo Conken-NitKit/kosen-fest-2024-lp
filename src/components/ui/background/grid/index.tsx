@@ -1,13 +1,12 @@
-import { Slot } from "@/components/my-ui/core/slot";
-import type { PropsWithChildren, ReactNode } from "react";
+import type { ElementType, HTMLAttributes } from "react";
 
 type Props = {
-  tag?: ReactNode;
+  tag?: ElementType;
   color: string;
   cellSize?: string | number;
   strokeWidth?: string | number;
   fade?: boolean;
-};
+} & Omit<HTMLAttributes<HTMLElement>, "color">;
 /**
  * 任意の要素にグリット背景のスタイルを付与する
  * @param props.tag - tagを変えたいときに設定
@@ -17,13 +16,14 @@ type Props = {
  * @param props.fade - グリットのフェード(default: true)
  */
 export const GridBackground = ({
-  tag,
+  tag: Component = "div",
   color,
   cellSize = "24px",
   strokeWidth = "4px",
   fade = true,
   children,
-}: PropsWithChildren<Props>) => {
+  ...props
+}: Props) => {
   const svg = `
     <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200' stroke='${color}' stroke-width='${strokeWidth}' fill-opacity='0.4' >
       <path d='M 100 0 L 100 200'/>
@@ -33,8 +33,7 @@ export const GridBackground = ({
   const svgDataUrl = `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
 
   return (
-    <Slot
-      element={tag ? tag : <div />}
+    <Component
       style={{
         backgroundImage: `url("${svgDataUrl}")`,
         backgroundRepeat: "repeat",
@@ -44,8 +43,9 @@ export const GridBackground = ({
           ? "radial-gradient(ellipse at top, white, transparent 70%)"
           : undefined,
       }}
+      {...props}
     >
       {children}
-    </Slot>
+    </Component>
   );
 };

@@ -8,9 +8,9 @@ export const Heading = () => {
   return (
     <div className="flex h-screen w-screen items-center justify-center">
       <GridBackground
-        tag={<div className="absolute h-full w-full" />}
         color={useCssVariable("--on-surface") ?? ""}
         cellSize="8px"
+        className="absolute h-full w-full"
       />
       <TypingAnimationText
         // biome-ignore lint/a11y/useHeadingContent: <explanation>
